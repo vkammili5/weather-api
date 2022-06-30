@@ -20,6 +20,6 @@ public class WeatherController : ControllerBase
     {
         Weather weather = await _weatherService.GetWeatherByLatLon(latitude, longitude);
 
-        return Ok(weather);
+        return weather;
     }
 }
