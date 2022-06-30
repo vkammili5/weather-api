@@ -12,7 +12,7 @@ public class WeatherService : IWeatherService
         _httpClient = new HttpClient();
     }
 
-    public async Task<Weather> GetWeatherByLatLon(double latitude, double longitude)
+    public async Task<Weather> GetWeatherByLatLonAsync(double latitude, double longitude)
     {
         string url = "https://api.open-meteo.com/v1/forecast?" +
             $"latitude={latitude}&" +

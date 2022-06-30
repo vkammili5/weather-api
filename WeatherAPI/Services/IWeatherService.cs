@@ -3,5 +3,5 @@
 namespace WeatherAPI.Services;
 public interface IWeatherService
 {
-    Task<Weather> GetWeatherByLatLon(double latitude, double longitude);
+    Task<Weather> GetWeatherByLatLonAsync(double latitude, double longitude);
 }

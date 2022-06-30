@@ -16,9 +16,9 @@ public class WeatherController : ControllerBase
     }
 
     [HttpGet("{latitude}/{longitude}")]
-    public async Task<ActionResult<Weather>> GetWeatherByLatLon(double latitude, double longitude)
+    public async Task<ActionResult<Weather>> GetWeatherByLatLonAsync(double latitude, double longitude)
     {
-        Weather weather = await _weatherService.GetWeatherByLatLon(latitude, longitude);
+        Weather weather = await _weatherService.GetWeatherByLatLonAsync(latitude, longitude);
 
         return weather;
     }

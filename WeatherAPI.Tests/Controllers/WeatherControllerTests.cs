@@ -28,11 +28,11 @@ internal class WeatherControllerTests
         // Arrange
         Weather expectedWeather = new Weather() { latitude = 51.5, longitude = -0.12 };
 
-        _mockWeatherService.Setup(w => w.GetWeatherByLatLon(51.5002, -0.1262))
+        _mockWeatherService.Setup(w => w.GetWeatherByLatLonAsync(51.5002, -0.1262))
             .ReturnsAsync(expectedWeather);
 
         // Act
-        var result = await _controller.GetWeatherByLatLon(51.5002, -0.1262);
+        var result = await _controller.GetWeatherByLatLonAsync(51.5002, -0.1262);
 
         // Assert
         result.Should().BeOfType(typeof(ActionResult<Weather>));
