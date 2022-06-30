@@ -1,0 +1,108 @@
+@startuml "WeatherAPI"
+skinparam ClassAttributeIconSize 0
+
+class CityController {
+    - cityService : ICityService
+
+    + CityController(cityService : ICityService)
+
+    + GetCities() : ActionResult<IEnumerable<City>>
+    
+    + GetCityById(id : int) : ActionResult<City>
+    + GetCityByCityName(cityName : string) : ActionResult<City>
+    
+    + AddCity(city : City) : ActionResult<City>
+
+    + UpdateCityById(id : int, city: City) : ActionResult<City>
+    + UpdateCityByCityName(cityName : string, city: City) : ActionResult<City>
+
+    + DeleteCityById(id : int) : IActionResult
+    + DeleteCityByCityName(cityName : string) : IActionResult
+}
+
+interface ICityService <<interface>> {
+    + GetAllCities() : List<City>
+
+    + FindCityById(id : int) : City
+    + FindCityByCityName(cityName : string) : City
+
+    + Create(city: City) : City
+
+    + UpdateCityById(id : int, city: City) : City
+    + UpdateCityByCityName(cityName : string, city: City) : City
+
+    + DeleteCityById(id : int) : void
+    + DeleteCityByCityName(cityName : string) : void
+
+    + CityExists(id : int) : bool
+    + CityExists(cityName : string) : bool
+}
+
+class CityService {
+    - context : CityContext
+
+    + CityService(context : CityContext)
+}
+
+class City {
+    + id : int
+    + CityName : string
+    + latitude : double
+    + longitude : double
+}
+
+class WeatherController {
+    - weatherService : IWeatherService
+    - cityService : ICityService
+
+    + WeatherController(\n\
+        weatherService : IWeatherService,\n\
+        cityService : ICityService\n\
+    )
+
+    + GetWeatherByCityName(cityName : string) : ActionResult<Weather>
+    + GetWeatherByLatLon(latitude : double, longitude : double) : ActionResult<Weather>
+
+    + GetWeatherOnAllCities() : ActionResult<IEnumerable<Weather>>
+}
+
+interface IWeatherService <<interface>> {
+    + GetWeatherByLatLon(latitude : double, longitude : double) : Weather
+}
+
+class WeatherService {
+    - httpClient : HttpClient
+}
+
+class Weather {
+    + Latitude : double
+    + Longitude : double
+    + StartDate : DateTime
+    + EndDate : DateTime
+    + WeatherCodes : List<WeatherCode>
+}
+
+Enum WeatherCode {
+    ClearSky
+    Cloudy
+    Fog
+    RainOrWorse
+}
+
+CityController o- ICityService
+ICityService <|.. CityService
+
+CityController --> City
+ICityService --> City
+
+WeatherController o- IWeatherService
+WeatherController o-- ICityService
+
+IWeatherService <|.. WeatherService
+
+WeatherController --> Weather
+IWeatherService --> Weather
+
+Weather o-- WeatherCode
+
+@enduml
