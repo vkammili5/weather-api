@@ -26,7 +26,21 @@ internal class WeatherControllerTests
     public async Task GetWeatherByLatLon_Should_Return_Correct_Weather()
     {
         // Arrange
-        Weather expectedWeather = new Weather() { latitude = 51.5, longitude = -0.12 };
+        Weather expectedWeather = new Weather() {
+            latitude = 51.5,
+            longitude = -0.12,
+            startDate = DateTime.Today,
+            endDate = DateTime.Today.AddDays(7),
+            weatherCodes = new List<WeatherCode>() {
+                WeatherCode.ClearSky,
+                WeatherCode.ClearSky,
+                WeatherCode.ClearSky,
+                WeatherCode.Fog,
+                WeatherCode.Fog,
+                WeatherCode.Fog,
+                WeatherCode.RainOrWorse,
+            }
+        };
 
         _mockWeatherService.Setup(w => w.GetWeatherByLatLonAsync(51.5002, -0.1262))
             .ReturnsAsync(expectedWeather);
