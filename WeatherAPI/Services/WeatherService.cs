@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Net;
 using System.Text.Json;
 using WeatherAPI.Models;
 
@@ -25,6 +26,13 @@ public class WeatherService : IWeatherService
         HttpResponseMessage response = await _httpClient.GetAsync(url);
 
         string responseString = await response.Content.ReadAsStringAsync();
+
+        if (!response.IsSuccessStatusCode)
+        {
+            string errorReason = JObject.Parse(responseString)["reason"]!.ToString();
+            throw new HttpRequestException(errorReason);
+        }
+
         Weather weather = ParseJsonStringToWeather(responseString);
 
         return weather;

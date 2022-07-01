@@ -52,4 +52,18 @@ internal class WeatherControllerTests
         result.Should().BeOfType(typeof(ActionResult<Weather>));
         result.Value.Should().BeEquivalentTo(expectedWeather);
     }
+
+    [Test]
+    public async Task GetWeatherByLatLon_With_Invalid_LatLon_Should_Return_BadRequest()
+    {
+        // Arrange
+        _mockWeatherService.Setup(w => w.GetWeatherByLatLonAsync(510.5002, -0.1262))
+            .Throws<HttpRequestException>();
+
+        // Act
+        var result = await _controller.GetWeatherByLatLonAsync(510.5002, -0.1262);
+
+        // Assert
+        result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
+    }
 }

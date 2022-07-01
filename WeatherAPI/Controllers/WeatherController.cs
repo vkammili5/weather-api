@@ -18,8 +18,14 @@ public class WeatherController : ControllerBase
     [HttpGet("{latitude}/{longitude}")]
     public async Task<ActionResult<Weather>> GetWeatherByLatLonAsync(double latitude, double longitude)
     {
-        Weather weather = await _weatherService.GetWeatherByLatLonAsync(latitude, longitude);
-
-        return weather;
+        try
+        {
+            Weather weather = await _weatherService.GetWeatherByLatLonAsync(latitude, longitude);
+            return weather;
+        }
+        catch (HttpRequestException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 }
