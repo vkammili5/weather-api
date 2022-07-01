@@ -1,6 +1,9 @@
 using WeatherAPI.Models;
 using WeatherAPI.Services;
 
+WeatherService weatherService = new();
+Weather weather = await weatherService.GetWeatherByLatLonAsync(51.5002, -0.1262);
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

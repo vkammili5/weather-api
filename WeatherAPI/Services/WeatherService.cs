@@ -1,4 +1,6 @@
-﻿using System.Text.Json;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Text.Json;
 using WeatherAPI.Models;
 
 namespace WeatherAPI.Services;
@@ -24,8 +26,33 @@ public class WeatherService : IWeatherService
 
         string responseString = await response.Content.ReadAsStringAsync();
 
-        Weather? weather =
-                JsonSerializer.Deserialize<Weather>(responseString);
+        JObject responseObject = JObject.Parse(responseString);
+
+        var a = responseObject["daily"]["weathercode"].ToList();
+
+        List<WeatherCode> listOfWeatherCode = new();
+        foreach (var x in a)
+        {
+            int codeNumber = int.Parse(x.ToString());
+            WeatherCode weatherCode = codeNumber switch
+            {
+                0 => WeatherCode.ClearSky,
+                <= 3 => WeatherCode.Cloudy,
+                < 51 => WeatherCode.Fog,
+                _ => WeatherCode.RainOrWorse
+            };
+
+            listOfWeatherCode.Add(weatherCode);
+        }
+
+        Weather weather = new Weather()
+        {
+            latitude = double.Parse(responseObject["latitude"].ToString()),
+            longitude = double.Parse(responseObject["longitude"].ToString()),
+            startDate = DateTime.Parse(responseObject["daily"]["time"].First().ToString()),
+            endDate = DateTime.Parse(responseObject["daily"]["time"].Last().ToString()),
+            weatherCodes = listOfWeatherCode
+        };
 
         return weather;
     }
