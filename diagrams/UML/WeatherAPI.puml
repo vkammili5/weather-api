@@ -1,12 +1,37 @@
 @startuml "WeatherAPI"
 skinparam ClassAttributeIconSize 0
 
+class CityController {
+    - cityService : ICityService
+
+    + CityController(cityService : ICityService)
+
+    + GetCityByCityName(cityName : string) : ActionResult<City>
+
+    + AddCity(city : City) : ActionResult<City>
+
+    + UpdateCity(cityName : string, city : City) : ActionResult<City>
+
+    + DeleteCity(cityName : string) : IActionResult
+}
+
 interface ICityService <<interface>> {
     + GetCityByCityName(cityName : string) : City
+
+    + AddCity(city: City) : City
+
+    + UpdateCity(cityName : string, city : city) : City
+
+    + DeleteCity(cityName : string) : void
+
+    + CityExists(cityName : string) : bool
 }
 
 class CityService {
     - httpClient : HttpClient
+    - cityContext : CityContext
+
+    + CityService(cityContext : CityContext)
 }
 
 class City {
@@ -29,7 +54,9 @@ class WeatherController {
         longitude : double\n\
     ) : ActionResult<Weather>
 
-    + GetWeatherByCityName(cityName : string) : ActionResult<Weather>
+    + GetWeatherByCityName(\n\
+        cityName : string\n\
+    ) : ActionResult<Weather>
 }
 
 interface IWeatherService <<interface>> {
@@ -58,17 +85,19 @@ Enum WeatherCode {
     RainOrWorse
 }
 
+CityController o-- ICityService
+
 ICityService <|.. CityService
-ICityService --> City
-WeatherController --> City
+ICityService ---> City
+WeatherController ----> City
 
 WeatherController o-- IWeatherService
 WeatherController o-- ICityService
 
 IWeatherService <|.. WeatherService
 
-WeatherController --> Weather
-IWeatherService --> Weather
+WeatherController ----> Weather
+IWeatherService ---> Weather
 
 Weather o-- WeatherCode
 
