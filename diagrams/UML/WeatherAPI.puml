@@ -1,51 +1,15 @@
 @startuml "WeatherAPI"
 skinparam ClassAttributeIconSize 0
 
-class CityController {
-    - cityService : ICityService
-
-    + CityController(cityService : ICityService)
-
-    + GetCities() : ActionResult<IEnumerable<City>>
-    
-    + GetCityById(id : int) : ActionResult<City>
-    + GetCityByCityName(cityName : string) : ActionResult<City>
-    
-    + AddCity(city : City) : ActionResult<City>
-
-    + UpdateCityById(id : int, city: City) : ActionResult<City>
-    + UpdateCityByCityName(cityName : string, city: City) : ActionResult<City>
-
-    + DeleteCityById(id : int) : IActionResult
-    + DeleteCityByCityName(cityName : string) : IActionResult
-}
-
 interface ICityService <<interface>> {
-    + GetAllCities() : List<City>
-
-    + FindCityById(id : int) : City
-    + FindCityByCityName(cityName : string) : City
-
-    + Create(city: City) : City
-
-    + UpdateCityById(id : int, city: City) : City
-    + UpdateCityByCityName(cityName : string, city: City) : City
-
-    + DeleteCityById(id : int) : void
-    + DeleteCityByCityName(cityName : string) : void
-
-    + CityExists(id : int) : bool
-    + CityExists(cityName : string) : bool
+    + GetCityByCityName(cityName : string) : City
 }
 
 class CityService {
-    - context : CityContext
-
-    + CityService(context : CityContext)
+    - httpClient : HttpClient
 }
 
 class City {
-    + id : int
     + CityName : string
     + latitude : double
     + longitude : double
@@ -60,14 +24,19 @@ class WeatherController {
         cityService : ICityService\n\
     )
 
-    + GetWeatherByCityName(cityName : string) : ActionResult<Weather>
-    + GetWeatherByLatLon(latitude : double, longitude : double) : ActionResult<Weather>
+    + GetWeatherByLatLon(\n\
+        latitude : double, \n\
+        longitude : double\n\
+    ) : ActionResult<Weather>
 
-    + GetWeatherOnAllCities() : ActionResult<IEnumerable<Weather>>
+    + GetWeatherByCityName(cityName : string) : ActionResult<Weather>
 }
 
 interface IWeatherService <<interface>> {
-    + GetWeatherByLatLon(latitude : double, longitude : double) : Weather
+    + GetWeatherByLatLon(\n\
+        latitude : double, \n\
+        longitude : double\n\
+    ) : Weather
 }
 
 class WeatherService {
@@ -89,13 +58,11 @@ Enum WeatherCode {
     RainOrWorse
 }
 
-CityController o- ICityService
 ICityService <|.. CityService
-
-CityController --> City
 ICityService --> City
+WeatherController --> City
 
-WeatherController o- IWeatherService
+WeatherController o-- IWeatherService
 WeatherController o-- ICityService
 
 IWeatherService <|.. WeatherService
