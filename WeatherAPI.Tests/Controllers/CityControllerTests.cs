@@ -176,4 +176,32 @@ internal class CityControllerTests
         // Assert
         result.Result.Should().BeOfType(typeof(NotFoundObjectResult));
     }
+
+    [Test]
+    public async Task DeleteCityAsync_Should_Delete_City()
+    {
+        // Arrange
+        _cityService.Setup(c => c.CityExists("SomeCity"))
+            .ReturnsAsync(true);
+
+        // Act
+        var result = await _controller.DeleteCityAsync("SomeCity");
+
+        // Assert
+        result.Should().BeOfType(typeof(NoContentResult));
+    }
+
+    [Test]
+    public async Task DeleteCityAsync_With_NonExistent_CityName_Should_Return_NotFound()
+    {
+        // Arrange
+        _cityService.Setup(c => c.CityExists("SomeCity"))
+            .ReturnsAsync(false);
+
+        // Act
+        var result = await _controller.DeleteCityAsync("SomeCity");
+
+        // Assert
+        result.Should().BeOfType(typeof(NotFoundObjectResult));
+    }
 }

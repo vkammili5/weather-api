@@ -44,8 +44,19 @@ public class CityController : ControllerBase
             return BadRequest(new { message = $"CityName {cityName} should match city.name {city.name}" });
 
         if (!await _cityService.CityExists(city.name))
-            return NotFound(city);
+            return NotFound(cityName);
 
         return await _cityService.UpdateCityAsync(city);
+    }
+
+    [HttpDelete("{cityName}")]
+    public async Task<IActionResult> DeleteCityAsync(string cityName)
+    {
+        if (!await _cityService.CityExists(cityName))
+            return NotFound(cityName);
+
+        await _cityService.DeleteCityAsync(cityName);
+
+        return NoContent();
     }
 }
