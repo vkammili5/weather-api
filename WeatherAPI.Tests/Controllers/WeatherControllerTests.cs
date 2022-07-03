@@ -97,7 +97,7 @@ internal class WeatherControllerTests
             longitude = 13.419998
         };
 
-        _mockCityService.Setup(w => w.GetWeatherByCityAsync("Berlin"))
+        _mockCityService.Setup(w => w.GetCityByCityNameAsync("Berlin"))
              .ReturnsAsync(expectedCity);
 
         _mockWeatherService.Setup(w => w.GetWeatherByLatLonAsync(52.52, 13.419998))
@@ -116,7 +116,7 @@ internal class WeatherControllerTests
     {
 
         //arrange
-        _mockCityService.Setup(x => x.GetWeatherByCityAsync("dfgsh")).
+        _mockCityService.Setup(x => x.GetCityByCityNameAsync("dfgsh")).
             Throws<HttpRequestException>();
 
         //act
