@@ -44,6 +44,11 @@ namespace WeatherAPI.Services
             throw new NotImplementedException();
         }
 
+        public Task<City> UpdateCityAsync(City city)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<bool> CityExists(string name)
         {
             throw new NotImplementedException();

@@ -6,6 +6,7 @@ namespace WeatherAPI.Services
     {
         Task<City> GetCityByCityNameAsync(string cityName);
         Task<City> AddCityAsync(City newCity);
+        Task<City> UpdateCityAsync(City cityToUpdate);
         Task<bool> CityExists(string name);
     }
 }

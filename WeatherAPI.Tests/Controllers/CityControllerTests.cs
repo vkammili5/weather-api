@@ -69,6 +69,9 @@ internal class CityControllerTests
             longitude = 20
         };
 
+        _cityService.Setup(c => c.CityExists(newCity.name))
+            .ReturnsAsync(false);
+
         _cityService.Setup(c => c.AddCityAsync(newCity))
             .ReturnsAsync(newCity);
 
@@ -99,5 +102,78 @@ internal class CityControllerTests
 
         // Assert
         result.Result.Should().BeOfType(typeof(ConflictObjectResult));
+    }
+
+    [Test]
+    public async Task UpdateCityAsync_Should_Update_City()
+    {
+        // Arrange
+        City cityToUpdate = new City()
+        {
+            name = "SomeCity",
+            latitude = 10,
+            longitude = 20
+        };
+
+        _cityService.Setup(c => c.CityExists("SomeCity"))
+            .ReturnsAsync(true);
+
+        _cityService.Setup(c => c.UpdateCityAsync(cityToUpdate))
+            .ReturnsAsync(cityToUpdate);
+
+        // Act
+        var result = await _controller.UpdateCityAsync("SomeCity", cityToUpdate);
+
+        // Assert
+        result.Should().BeOfType(typeof(ActionResult<City>));
+        result.Value.Should().BeEquivalentTo(cityToUpdate);
+    }
+
+    [Test]
+    public async Task UpdateCityAsync_With_CityName_Not_Matching_City_Name_Should_Return_BadRequest()
+    {
+        // Arrange
+        City cityToUpdate = new City()
+        {
+            name = "SomeCity",
+            latitude = 10,
+            longitude = 20
+        };
+
+        _cityService.Setup(c => c.CityExists("SomeCity"))
+            .ReturnsAsync(true);
+
+        _cityService.Setup(c => c.UpdateCityAsync(cityToUpdate))
+            .ReturnsAsync(cityToUpdate);
+
+        // Act
+        var result = await _controller.UpdateCityAsync("SomeOtherCity", cityToUpdate);
+
+        // Assert
+        result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
+    }
+
+    [Test]
+    public async Task UpdateCityAsync_With_City_Not_Existing_Should_Return_NotFound()
+    {
+        // Arrange
+        City cityToUpdate = new City()
+        {
+            name = "SomeCity",
+            latitude = 10,
+            longitude = 20
+        };
+
+        _cityService.Setup(c => c.CityExists("SomeCity"))
+            .ReturnsAsync(false);
+
+        _cityService.Setup(c => c.UpdateCityAsync(cityToUpdate))
+            .ReturnsAsync(cityToUpdate);
+
+        // Act
+        var result = await _controller.UpdateCityAsync("SomeCity", cityToUpdate);
+
+        // Assert
+        result.Result.Should().BeOfType(typeof(NotFoundObjectResult));
     }
 }
