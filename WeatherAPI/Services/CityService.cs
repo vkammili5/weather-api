@@ -10,7 +10,7 @@ namespace WeatherAPI.Services
         {
             _httpClient = new HttpClient();
         }
-        public async Task<City> GetWeatherByCityAsync(string cityName)
+        public async Task<City> GetCityByCityNameAsync(string cityName)
         {
             string url = "https://geocoding-api.open-meteo.com/v1/search?" +
                             $"name={cityName}&";
