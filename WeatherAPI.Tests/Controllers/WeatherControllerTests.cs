@@ -71,9 +71,7 @@ internal class WeatherControllerTests
     [Test]
     public async Task GetWeatherByCityName_Should_Return_Correct_Weather()
     {
-
         // Arrange
-
         Weather expectedWeather = new Weather()
         {
             latitude = 52.52,
@@ -103,7 +101,6 @@ internal class WeatherControllerTests
         _mockWeatherService.Setup(w => w.GetWeatherByLatLonAsync(52.52, 13.419998))
             .ReturnsAsync(expectedWeather);
 
-
         //act
         var result = await _controller.GetWeatherByCityNameAsync("Berlin");
 
@@ -114,7 +111,6 @@ internal class WeatherControllerTests
     [Test]
     public async Task GetWeatherByCity_Should_Return_BadRequest()
     {
-
         //arrange
         _mockCityService.Setup(x => x.GetCityByCityNameAsync("dfgsh")).
             Throws<HttpRequestException>();

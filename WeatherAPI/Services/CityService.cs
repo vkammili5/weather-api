@@ -16,10 +16,16 @@ namespace WeatherAPI.Services
                             $"name={cityName}&";
             HttpResponseMessage response = await _httpClient.GetAsync(url);
             string responseString = await response.Content.ReadAsStringAsync();
-            JObject responseObject = JObject.Parse(responseString);          
 
+            JObject responseObject = JObject.Parse(responseString);
+            var responseObjectResults = responseObject["results"];
 
-            var firstLocation = responseObject["results"].First();
+            if (!response.IsSuccessStatusCode || responseObjectResults is null)
+            {
+                throw new HttpRequestException($"No geocoding found for {cityName}");
+            }
+
+            var firstLocation = responseObjectResults.First();
             Console.WriteLine();
 
             City city = new City()
