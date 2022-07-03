@@ -9,10 +9,12 @@ namespace WeatherAPI.Controllers;
 public class WeatherController : ControllerBase
 {
     private readonly IWeatherService _weatherService;
+    private readonly ICityService _cityService;
 
-    public WeatherController(IWeatherService weatherService)
+    public WeatherController(IWeatherService weatherService, ICityService cityService)
     {
         _weatherService = weatherService;
+        _cityService = cityService;
     }
 
     [HttpGet("{latitude}/{longitude}")]
@@ -27,5 +29,20 @@ public class WeatherController : ControllerBase
         {
             return BadRequest(ex.Message);
         }
+    }
+
+    [HttpGet("{cityName}")]
+    public async Task<ActionResult<Weather>> GetWeatherByCityNameAsync(string cityName)
+    {
+        try
+        {
+            City city = await _cityService.GetWeatherByCityAsync(cityName);
+            Weather weather = await _weatherService.GetWeatherByLatLonAsync(city.latitude, city.longitude);
+            return weather;
+        }
+        catch (HttpRequestException ex)
+        {
+            return BadRequest(ex.Message);
+        }        
     }
 }

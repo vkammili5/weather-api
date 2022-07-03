@@ -13,13 +13,15 @@ internal class WeatherControllerTests
 {
     private WeatherController _controller;
     private Mock<IWeatherService> _mockWeatherService;
+    private Mock<ICityService> _mockCityService;
 
     [SetUp]
     public void Setup()
     {
         // Arrange
         _mockWeatherService = new Mock<IWeatherService>();
-        _controller = new WeatherController(_mockWeatherService.Object);
+        _mockCityService = new Mock<ICityService>();
+        _controller = new WeatherController(_mockWeatherService.Object, _mockCityService.Object);
     }
 
     [Test]
@@ -64,6 +66,63 @@ internal class WeatherControllerTests
         var result = await _controller.GetWeatherByLatLonAsync(510.5002, -0.1262);
 
         // Assert
+        result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
+    }
+    [Test]
+    public async Task GetWeatherByCityName_Should_Return_Correct_Weather()
+    {
+
+        // Arrange
+
+        Weather expectedWeather = new Weather()
+        {
+            latitude = 52.52,
+            longitude = 13.419998,
+            startDate = DateTime.Today,
+            endDate = DateTime.Today.AddDays(7),
+            weatherCodes = new List<WeatherCode>() {
+                WeatherCode.ClearSky,
+                WeatherCode.ClearSky,
+                WeatherCode.ClearSky,
+                WeatherCode.ClearSky,
+                WeatherCode.Cloudy,
+                WeatherCode.Cloudy,
+                WeatherCode.Cloudy,
+            }
+        };
+        City expectedCity = new City()
+        {
+            name = "Berlin",
+            latitude = 52.52,
+            longitude = 13.419998
+        };
+
+        _mockCityService.Setup(w => w.GetWeatherByCityAsync("Berlin"))
+             .ReturnsAsync(expectedCity);
+
+        _mockWeatherService.Setup(w => w.GetWeatherByLatLonAsync(52.52, 13.419998))
+            .ReturnsAsync(expectedWeather);
+
+
+        //act
+        var result = await _controller.GetWeatherByCityNameAsync("Berlin");
+
+        // Assert
+        result.Should().BeOfType(typeof(ActionResult<Weather>));
+        result.Value.Should().BeEquivalentTo(expectedWeather);
+    }
+    [Test]
+    public async Task GetWeatherByCity_Should_Return_BadRequest()
+    {
+
+        //arrange
+        _mockCityService.Setup(x => x.GetWeatherByCityAsync("dfgsh")).
+            Throws<HttpRequestException>();
+
+        //act
+        var result = await _controller.GetWeatherByCityNameAsync("dfgsh");
+
+        //Assert
         result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
     }
 }
