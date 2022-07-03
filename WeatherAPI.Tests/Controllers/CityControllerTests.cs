@@ -57,4 +57,47 @@ internal class CityControllerTests
         // Assert
         result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
     }
+
+    [Test]
+    public async Task AddCityAsync_Creates_A_City()
+    {
+        // Arrange
+        City newCity = new City()
+        {
+            name = "NewCity",
+            latitude = 10,
+            longitude = 20
+        };
+
+        _cityService.Setup(c => c.AddCityAsync(newCity))
+            .ReturnsAsync(newCity);
+
+        // Act
+        var result = await _controller.AddCityAsync(newCity);
+
+        // Assert
+        result.Should().BeOfType(typeof(ActionResult<City>));
+        result.Value.Should().BeEquivalentTo(newCity);
+    }
+
+    [Test]
+    public async Task AddCityAsync_With_City_Already_Exist_Should_Conflict()
+    {
+        // Arrange
+        City newCity = new City()
+        {
+            name = "NewCity",
+            latitude = 10,
+            longitude = 20
+        };
+
+        _cityService.Setup(c => c.CityExists(newCity.name))
+            .ReturnsAsync(true);
+
+        // Act
+        var result = await _controller.AddCityAsync(newCity);
+
+        // Assert
+        result.Result.Should().BeOfType(typeof(ConflictObjectResult));
+    }
 }

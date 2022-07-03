@@ -10,6 +10,7 @@ namespace WeatherAPI.Services
         {
             _httpClient = new HttpClient();
         }
+
         public async Task<City> GetCityByCityNameAsync(string cityName)
         {
             string url = "https://geocoding-api.open-meteo.com/v1/search?" +
@@ -36,6 +37,16 @@ namespace WeatherAPI.Services
             };
 
             return city;           
+        }
+
+        public Task<City> AddCityAsync(City newCity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> CityExists(string name)
+        {
+            throw new NotImplementedException();
         }
     }
 }

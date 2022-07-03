@@ -27,4 +27,12 @@ public class CityController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
+    public async Task<ActionResult<City>> AddCityAsync(City newCity)
+    {
+        if (await _cityService.CityExists(newCity.name))
+            return Conflict(new { message = $"City with city name {newCity.name} already exists." });
+
+        return await _cityService.AddCityAsync(newCity);
+    }
 }
