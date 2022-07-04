@@ -9,8 +9,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<ICityService, CityService>();
-var connectionString = builder.Configuration.GetConnectionString("cityweatherapi");
-builder.Services.AddDbContext<CityContext>(option => option.UseMySql(connectionString,ServerVersion.AutoDetect(connectionString)));
+
+if (builder.Environment.EnvironmentName == "Testing")
+{
+    builder.Services.AddDbContext<CityContext>(option =>
+        option.UseInMemoryDatabase("cityweatherapi"));
+}
+else
+{
+    var connectionString = builder.Configuration.GetConnectionString("cityweatherapi");
+    builder.Services.AddDbContext<CityContext>(option => option.UseMySql(connectionString,ServerVersion.AutoDetect(connectionString)));
+}
 
 builder.Services.AddControllers();
 
