@@ -8,64 +8,52 @@ namespace WeatherAPI.Services
         public readonly HttpClient _httpClient;
         public readonly CityContext _cityContext;
         
-        public CityService(CityContext cityContext) { 
-
+        public CityService(CityContext cityContext) 
+        {
             _cityContext = cityContext;
             _httpClient = new HttpClient();
         }
-        public async Task<City> FindCityByName(string cityName) { 
-            var city = await _cityContext.Cities.FindAsync(cityName);
+
+        private async Task<City> FindCityByNameAsync(string cityName) 
+        {
+            var city = _cityContext.Cities.SingleOrDefault(x => x.name == cityName); 
             return city;
         }
-        public async Task<bool> CityExist(string cityName) {
 
+        public async Task<bool> CityExists(string cityName) 
+        {
             return _cityContext.Cities.Any(b => b.name == cityName);
-
         }
+
         public async Task<City> AddCityAsync(City city) {
             _cityContext.Add(city);
             _cityContext.SaveChanges();
-             return city;            
+            return city;            
         }
-        public async Task<City> UpdateCityAsync(string cityName, City city)
+
+        public async Task<City> UpdateCityAsync(City city)
         {
-            var existingCityFound = await FindCityByName(cityName);
-            try
-            {                
-                if (existingCityFound != null)
-                {
-                    existingCityFound.name = city.name;
-                    existingCityFound.latitude = city.latitude;
-                    existingCityFound.longitude = city.longitude;
-                    _cityContext.SaveChanges();
-                    return existingCityFound;
-                }
-            }
-            catch (Exception ex) {
-                Console.WriteLine(ex.Message);
-            }
-           
+            var existingCityFound = await FindCityByNameAsync(city.name);
+
+            existingCityFound.name = city.name;
+            existingCityFound.latitude = city.latitude;
+            existingCityFound.longitude = city.longitude;
+            _cityContext.SaveChanges();
             return existingCityFound;
         }
-        public async Task<bool> DeleteCityAsync(string cityName) {
 
-            var existingCityFound = FindCityByName(cityName);
-            bool success = false;
-            
-            if (existingCityFound != null)
-            {
-                _cityContext.Remove(cityName);
-                _cityContext.SaveChanges();
-                success = true;
-            }
+        public async Task DeleteCityAsync(string cityName) 
+        {
+            var existingCityFound = await FindCityByNameAsync(cityName);
 
-            return success;
-        }     
-       
+            _cityContext.Remove(existingCityFound);
+            _cityContext.SaveChanges();
+        }
+        
         public async Task<City> GetCityByCityNameAsync(string cityName)
         {
-            if (await CityExist(cityName)) {
-                City city = await FindCityByName(cityName);
+            if (await CityExists(cityName)) {
+                City city = await FindCityByNameAsync(cityName);
                 return city;
             }
             else
@@ -86,11 +74,8 @@ namespace WeatherAPI.Services
                     latitude = double.Parse(firstLocation["latitude"].ToString()),
                     longitude = double.Parse(firstLocation["longitude"].ToString())
                 };
-                   
-               
                 return city;
             }
-            
         }
     }
 }
