@@ -63,7 +63,12 @@ namespace WeatherAPI.Services
                 HttpResponseMessage response = await _httpClient.GetAsync(url);
               
                 string responseString = await response.Content.ReadAsStringAsync();
+
                 JObject responseObject = JObject.Parse(responseString);
+                var responseObjectResults = responseObject["results"];
+
+                if (!response.IsSuccessStatusCode || responseObjectResults is null)
+                    throw new HttpRequestException($"No geocoding found for {cityName}");
 
                 var firstLocation = responseObject["results"].First();
                 Console.WriteLine();

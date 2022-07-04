@@ -9,8 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<ICityService, CityService>();
-builder.Services.AddDbContext<CityContext>(option =>
-    option.UseInMemoryDatabase("CityWeatherDb"));
+var connectionString = builder.Configuration.GetConnectionString("cityweatherapi");
+builder.Services.AddDbContext<CityContext>(option => option.UseMySql(connectionString,ServerVersion.AutoDetect(connectionString)));
+
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
