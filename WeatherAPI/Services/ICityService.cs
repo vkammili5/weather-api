@@ -4,6 +4,7 @@ namespace WeatherAPI.Services
 {
     public interface ICityService
     {
+        Task<List<City>> GetAllCity();
         Task<City> GetCityByCityNameAsync(string cityName);
         Task<City> AddCityAsync(City city);
         Task<City> UpdateCityAsync(City cityToUpdate);
