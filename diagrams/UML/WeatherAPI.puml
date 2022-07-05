@@ -6,6 +6,8 @@ class CityController {
 
     + CityController(cityService : ICityService)
 
+    + GetCityList() : ActionResult<IEnumerable<City>>
+
     + GetCityByCityName(cityName : string) : ActionResult<City>
 
     + AddCity(city : City) : ActionResult<City>
@@ -16,11 +18,13 @@ class CityController {
 }
 
 interface ICityService <<interface>> {
+    + GetAllCity() : List<City>
+
     + GetCityByCityName(cityName : string) : City
 
-    + AddCity(city: City) : City
+    + AddCity(city : City) : City
 
-    + UpdateCity(cityName : string, city : city) : City
+    + UpdateCity(cityName : string, city : City) : City
 
     + DeleteCity(cityName : string) : void
 
@@ -28,10 +32,12 @@ interface ICityService <<interface>> {
 }
 
 class CityService {
-    - httpClient : HttpClient
+    - httpClientService : IHttpClient
     - cityContext : CityContext
 
-    + CityService(cityContext : CityContext)
+    + CityService(\n\
+        httpClientService : IHttpClientService,\n\
+        cityContext : CityContext)
 }
 
 class City {
@@ -67,7 +73,10 @@ interface IWeatherService <<interface>> {
 }
 
 class WeatherService {
-    - httpClient : HttpClient
+    - httpClientService : IHttpClientService
+
+    + WeatherService(\n\
+        httpClientService : IHttpClientService)
 }
 
 class Weather {
@@ -85,6 +94,16 @@ Enum WeatherCode {
     RainOrWorse
 }
 
+interface IHttpClientService <<interface>> {
+    + GetAsync(url : string) : (string, bool)
+}
+
+class HttpClientService {
+    - httpClient : HttpClient
+	
+	+ GetAsync(url : string) : (string, bool)
+}
+
 CityController o-- ICityService
 
 ICityService <|.. CityService
@@ -100,5 +119,10 @@ WeatherController ----> Weather
 IWeatherService ---> Weather
 
 Weather o-- WeatherCode
+
+CityService o-- IHttpClientService
+WeatherService o-- IHttpClientService
+
+IHttpClientService <|.. HttpClientService
 
 @enduml
