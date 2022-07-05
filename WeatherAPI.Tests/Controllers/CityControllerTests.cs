@@ -23,6 +23,37 @@ internal class CityControllerTests
     }
 
     [Test]
+    public async Task GetCityListAsync_Should_Return_Correct_City_List()
+    {
+        // Arrange
+        var expectedCityList = new List<City>()
+        {
+            new City()
+            {
+                name = "Berlin",
+                latitude = 52.52,
+                longitude = 13.419998
+            },
+            new City()
+            {
+                name = "Manchester",
+                latitude = 30.2,
+                longitude = 15.419998
+            }
+        };
+
+        _cityService.Setup(c => c.GetAllCity())
+            .ReturnsAsync(expectedCityList);
+
+        // Act
+        var result = await _controller.GetCityList();
+
+        // Assert
+        result.Should().BeOfType(typeof(ActionResult<IEnumerable<City>>));
+        result.Value.Should().BeEquivalentTo(expectedCityList);
+    }
+
+    [Test]
     public async Task GetCityByCityNameAsync_Should_Return_Correct_City()
     {
         // Arrange

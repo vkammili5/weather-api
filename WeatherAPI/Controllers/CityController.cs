@@ -14,6 +14,12 @@ public class CityController : ControllerBase
         _cityService = cityService;
     }
 
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<City>>> GetCityList()
+    {
+        return await _cityService.GetAllCity();
+    }
+
     [HttpGet("{cityName}")]
     public async Task<ActionResult<City>> GetCityByCityNameAsync(string cityName)
     {
