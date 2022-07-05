@@ -3,16 +3,17 @@ using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Text.Json;
 using WeatherAPI.Models;
+using WeatherAPI.Services.HttpClients;
 
 namespace WeatherAPI.Services;
 
 public class WeatherService : IWeatherService
 {
-    private readonly HttpClient _httpClient;
+    private readonly IHttpClientService _httpClientService;
 
-    public WeatherService()
+    public WeatherService(IHttpClientService httpClientService)
     {
-        _httpClient = new HttpClient();
+        _httpClientService = httpClientService;
     }
 
     public async Task<Weather> GetWeatherByLatLonAsync(double latitude, double longitude)
@@ -23,14 +24,11 @@ public class WeatherService : IWeatherService
             "daily=weathercode&" +
             "timezone=Europe%2FLondon";
 
-        HttpResponseMessage response = await _httpClient.GetAsync(url);
+        (string responseString, bool isSuccess) = await _httpClientService.GetAsync(url);
 
-        string responseString = await response.Content.ReadAsStringAsync();
-
-        if (!response.IsSuccessStatusCode)
+        if (!isSuccess)
         {
-            string errorReason = JObject.Parse(responseString)["reason"]!.ToString();
-            throw new HttpRequestException(errorReason);
+            throw new HttpRequestException(responseString);
         }
 
         Weather weather = ParseJsonStringToWeather(responseString);
