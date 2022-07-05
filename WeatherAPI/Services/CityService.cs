@@ -13,8 +13,8 @@ namespace WeatherAPI.Services
             _cityContext = cityContext;
             _httpClient = new HttpClient();
         }
-        public async Task<List<City>> GetAllCity() {
-
+        public async Task<List<City>> GetAllCity() 
+        {
             return _cityContext.Cities.ToList();
         }
         private async Task<City> FindCityByNameAsync(string cityName) 
