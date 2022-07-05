@@ -17,11 +17,6 @@ namespace WeatherAPI.Services
         {
             return _cityContext.Cities.ToList();
         }
-        private async Task<City> FindCityByNameAsync(string cityName) 
-        {
-            var city = _cityContext.Cities.SingleOrDefault(x => x.name == cityName); 
-            return city;
-        }
 
         public async Task<bool> CityExists(string cityName) 
         {
@@ -55,35 +50,44 @@ namespace WeatherAPI.Services
         
         public async Task<City> GetCityByCityNameAsync(string cityName)
         {
-            if (await CityExists(cityName)) {
-                City city = await FindCityByNameAsync(cityName);
-                return city;
-            }
-            else
+            if (await CityExists(cityName))
+                return await FindCityByNameAsync(cityName);
+
+            return await GetCityOnPublicApiAsync(cityName);
+        }
+
+        private async Task<City> GetCityOnPublicApiAsync(string cityName)
+        {
+            string url = "https://geocoding-api.open-meteo.com/v1/search?" +
+                                            $"name={cityName}";
+            HttpResponseMessage response = await _httpClient.GetAsync(url);
+
+            string responseString = await response.Content.ReadAsStringAsync();
+
+            JObject responseObject = JObject.Parse(responseString);
+            var responseObjectResults = responseObject["results"];
+
+            if (!response.IsSuccessStatusCode || responseObjectResults is null)
+                throw new HttpRequestException($"No geocoding found for {cityName}, " +
+                    $"please do POST request to /api/v1/city endpoint to add new city.");
+
+            var firstLocation = responseObject["results"].First();
+
+            City city = new City()
             {
-                string url = "https://geocoding-api.open-meteo.com/v1/search?" +
-                                $"name={cityName}&";
-                HttpResponseMessage response = await _httpClient.GetAsync(url);
-              
-                string responseString = await response.Content.ReadAsStringAsync();
+                name = firstLocation["name"].ToString(),
+                latitude = double.Parse(firstLocation["latitude"].ToString()),
+                longitude = double.Parse(firstLocation["longitude"].ToString())
+            };
 
-                JObject responseObject = JObject.Parse(responseString);
-                var responseObjectResults = responseObject["results"];
+            city = await AddCityAsync(city);
+            return city;
+        }
 
-                if (!response.IsSuccessStatusCode || responseObjectResults is null)
-                    throw new HttpRequestException($"No geocoding found for {cityName}");
-
-                var firstLocation = responseObject["results"].First();
-                Console.WriteLine();
-
-                City city = new City()
-                {
-                    name = firstLocation["name"].ToString(),
-                    latitude = double.Parse(firstLocation["latitude"].ToString()),
-                    longitude = double.Parse(firstLocation["longitude"].ToString())
-                };
-                return city;
-            }
+        private async Task<City> FindCityByNameAsync(string cityName)
+        {
+            var city = _cityContext.Cities.SingleOrDefault(x => x.name == cityName);
+            return city;
         }
     }
 }

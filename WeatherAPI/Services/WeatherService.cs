@@ -50,7 +50,13 @@ public class WeatherService : IWeatherService
             return NumberToWeatherCode(weatherCodeNumber);
         }).ToList();
 
-        Weather weather = new ()
+        Weather weather = ResponseObjectToWeather(responseObject, weatherCodeList);
+        return weather;
+    }
+
+    private static Weather ResponseObjectToWeather(JObject responseObject, List<WeatherCode> weatherCodeList)
+    {
+        return new()
         {
             latitude = double.Parse(responseObject["latitude"]!.ToString()),
             longitude = double.Parse(responseObject["longitude"]!.ToString()),
@@ -58,7 +64,6 @@ public class WeatherService : IWeatherService
             endDate = DateTime.Parse(responseObject["daily"]!["time"]!.Last().ToString()),
             weatherCodes = weatherCodeList
         };
-        return weather;
     }
 
     private static WeatherCode NumberToWeatherCode(int weatherCodeNumber)
