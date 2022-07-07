@@ -68,7 +68,7 @@ internal class CityControllerTests
             .ReturnsAsync(expectedCity);
 
         // Act
-        var result = await _controller.GetCityByCityNameAsync("Berlin");
+        var result = await _controller.GetCityByCityName("Berlin");
 
         // Assert
         result.Should().BeOfType(typeof(ActionResult<City>));
@@ -83,7 +83,7 @@ internal class CityControllerTests
             .Throws<HttpRequestException>();
 
         // Act
-        var result = await _controller.GetCityByCityNameAsync("asjdkflsdj");
+        var result = await _controller.GetCityByCityName("asjdkflsdj");
 
         // Assert
         result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
@@ -107,10 +107,10 @@ internal class CityControllerTests
             .ReturnsAsync(newCity);
 
         // Act
-        var result = await _controller.AddCityAsync(newCity);
+        var actionResult = await _controller.AddCity(newCity);
 
         // Assert
-        result.Should().BeOfType(typeof(ActionResult<City>));
+        var result = actionResult.Result as CreatedAtActionResult;
         result.Value.Should().BeEquivalentTo(newCity);
     }
 
@@ -129,7 +129,7 @@ internal class CityControllerTests
             .ReturnsAsync(true);
 
         // Act
-        var result = await _controller.AddCityAsync(newCity);
+        var result = await _controller.AddCity(newCity);
 
         // Assert
         result.Result.Should().BeOfType(typeof(ConflictObjectResult));
@@ -153,7 +153,7 @@ internal class CityControllerTests
             .ReturnsAsync(cityToUpdate);
 
         // Act
-        var result = await _controller.UpdateCityAsync("SomeCity", cityToUpdate);
+        var result = await _controller.UpdateCity("SomeCity", cityToUpdate);
 
         // Assert
         result.Should().BeOfType(typeof(ActionResult<City>));
@@ -178,7 +178,7 @@ internal class CityControllerTests
             .ReturnsAsync(cityToUpdate);
 
         // Act
-        var result = await _controller.UpdateCityAsync("SomeOtherCity", cityToUpdate);
+        var result = await _controller.UpdateCity("SomeOtherCity", cityToUpdate);
 
         // Assert
         result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
@@ -202,7 +202,7 @@ internal class CityControllerTests
             .ReturnsAsync(cityToUpdate);
 
         // Act
-        var result = await _controller.UpdateCityAsync("SomeCity", cityToUpdate);
+        var result = await _controller.UpdateCity("SomeCity", cityToUpdate);
 
         // Assert
         result.Result.Should().BeOfType(typeof(NotFoundObjectResult));
@@ -216,7 +216,7 @@ internal class CityControllerTests
             .ReturnsAsync(true);
 
         // Act
-        var result = await _controller.DeleteCityAsync("SomeCity");
+        var result = await _controller.DeleteCity("SomeCity");
 
         // Assert
         result.Should().BeOfType(typeof(NoContentResult));
@@ -230,7 +230,7 @@ internal class CityControllerTests
             .ReturnsAsync(false);
 
         // Act
-        var result = await _controller.DeleteCityAsync("SomeCity");
+        var result = await _controller.DeleteCity("SomeCity");
 
         // Assert
         result.Should().BeOfType(typeof(NotFoundObjectResult));

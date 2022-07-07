@@ -20,8 +20,8 @@ public class CityController : ControllerBase
         return await _cityService.GetAllCity();
     }
 
-    [HttpGet("{cityName}")]
-    public async Task<ActionResult<City>> GetCityByCityNameAsync(string cityName)
+    [HttpGet("{cityName}", Name = "Get")]
+    public async Task<ActionResult<City>> GetCityByCityName(string cityName)
     {
         try
         {
@@ -35,31 +35,37 @@ public class CityController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<City>> AddCityAsync(City newCity)
+    public async Task<ActionResult<City>> AddCity(City newCity)
     {
         if (await _cityService.CityExists(newCity.Name))
             return Conflict(new { message = $"City with city name {newCity.Name} already exists." });
 
-        return await _cityService.AddCityAsync(newCity);
+        await _cityService.AddCityAsync(newCity);
+
+        return CreatedAtAction(
+            nameof(GetCityByCityName),
+            new { cityName = newCity.Name },
+            newCity);
     }
 
     [HttpPut("{cityName}")]
-    public async Task<ActionResult<City>> UpdateCityAsync(string cityName, City city)
+    public async Task<ActionResult<City>> UpdateCity(string cityName, City city)
     {
         if (cityName != city.Name)
             return BadRequest(new { message = $"CityName {cityName} should match city.name {city.Name}" });
 
-        if (!await _cityService.CityExists(city.Name))
-            return NotFound(cityName);
+        if (!await _cityService.CityExists(cityName))
+            return NotFound(new { message = $"CityName {cityName} not found in collection" });
 
-        return await _cityService.UpdateCityAsync(city);
+        city = await _cityService.UpdateCityAsync(city);
+        return city;
     }
 
     [HttpDelete("{cityName}")]
-    public async Task<IActionResult> DeleteCityAsync(string cityName)
+    public async Task<IActionResult> DeleteCity(string cityName)
     {
         if (!await _cityService.CityExists(cityName))
-            return NotFound(cityName);
+            return NotFound(new { message = $"CityName {cityName} not found in collection" });
 
         await _cityService.DeleteCityAsync(cityName);
 
