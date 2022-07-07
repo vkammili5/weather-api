@@ -37,8 +37,8 @@ public class CityController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<City>> AddCityAsync(City newCity)
     {
-        if (await _cityService.CityExists(newCity.name))
-            return Conflict(new { message = $"City with city name {newCity.name} already exists." });
+        if (await _cityService.CityExists(newCity.Name))
+            return Conflict(new { message = $"City with city name {newCity.Name} already exists." });
 
         return await _cityService.AddCityAsync(newCity);
     }
@@ -46,10 +46,10 @@ public class CityController : ControllerBase
     [HttpPut("{cityName}")]
     public async Task<ActionResult<City>> UpdateCityAsync(string cityName, City city)
     {
-        if (cityName != city.name)
-            return BadRequest(new { message = $"CityName {cityName} should match city.name {city.name}" });
+        if (cityName != city.Name)
+            return BadRequest(new { message = $"CityName {cityName} should match city.name {city.Name}" });
 
-        if (!await _cityService.CityExists(city.name))
+        if (!await _cityService.CityExists(city.Name))
             return NotFound(cityName);
 
         return await _cityService.UpdateCityAsync(city);

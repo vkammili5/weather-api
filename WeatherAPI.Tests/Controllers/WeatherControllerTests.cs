@@ -29,19 +29,10 @@ internal class WeatherControllerTests
     {
         // Arrange
         Weather expectedWeather = new Weather() {
-            latitude = 51.5,
-            longitude = -0.12,
-            startDate = DateTime.Today,
-            endDate = DateTime.Today.AddDays(7),
-            weatherCodes = new List<WeatherCode>() {
-                WeatherCode.ClearSky,
-                WeatherCode.ClearSky,
-                WeatherCode.ClearSky,
-                WeatherCode.Fog,
-                WeatherCode.Fog,
-                WeatherCode.Fog,
-                WeatherCode.RainOrWorse,
-            }
+            Latitude = 51.5,
+            Longitude = -0.12,
+            WeatherCode = WeatherCode.ClearSky,
+            WhatToPrepare = "wear summer clothings, wear a cap, apply sunscreen"
         };
 
         _mockWeatherService.Setup(w => w.GetWeatherByLatLonAsync(51.5002, -0.1262))
@@ -74,25 +65,16 @@ internal class WeatherControllerTests
         // Arrange
         Weather expectedWeather = new Weather()
         {
-            latitude = 52.52,
-            longitude = 13.419998,
-            startDate = DateTime.Today,
-            endDate = DateTime.Today.AddDays(7),
-            weatherCodes = new List<WeatherCode>() {
-                WeatherCode.ClearSky,
-                WeatherCode.ClearSky,
-                WeatherCode.ClearSky,
-                WeatherCode.ClearSky,
-                WeatherCode.Cloudy,
-                WeatherCode.Cloudy,
-                WeatherCode.Cloudy,
-            }
+            Latitude = 52.52,
+            Longitude = 13.419998,
+            WeatherCode = WeatherCode.ClearSky,
+            WhatToPrepare = "wear summer clothings, wear a cap, apply sunscreen"
         };
         City expectedCity = new City()
         {
-            name = "Berlin",
-            latitude = 52.52,
-            longitude = 13.419998
+            Name = "Berlin",
+            Latitude = 52.52,
+            Longitude = 13.419998
         };
 
         _mockCityService.Setup(w => w.GetCityByCityNameAsync("Berlin"))
