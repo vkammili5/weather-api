@@ -33,17 +33,48 @@ Here we have 3 folders:
 
 ## `City` endpoints
 
+### Get All Cities
+
+[[Back To Top]](#weather-api)
+
+#### Request
+
+**GET** `api/v1/city`
+
+#### Request samples
+
+Status Code: `200 OK`
+
+Content type: `application/json`
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Manchester",
+    "latitude": 53.48095,
+    "longitude": -2.23743
+  },
+  {
+    "id": 2,
+    "name": "Berlin",
+    "latitude": 52.52437,
+    "longitude": 13.41053
+  }
+]
+```
+
 ### Get City By City Name
 
 [[Back To Top]](#weather-api)
 
-### Request
+#### Request
 
 **GET** `api/v1/city/{cityName}`
 
-For Example `api/v1/city/Manchester`
+For example `api/v1/city/Manchester`
 
-### Response samples
+#### Response samples
 
 Status Code: `200 OK`
 
@@ -62,4 +93,136 @@ If `{cityName}` does not match any city name known by the API, then the response
 
 ```
 No geocoding found for Manchestersss, please do POST request to /api/v1/city endpoint to add new city.
+```
+
+### Add City
+
+[[Back To Top]](#weather-api)
+
+#### Request
+
+**POST** `api/v1/city`
+
+with request body
+
+```json
+{
+  "name": "London",
+  "latitude": 51.50853,
+  "longitude": -0.12574
+}
+```
+
+#### Request samples
+
+Status Code: `201 Created`
+
+Content type: `application/json`
+
+```json
+{
+  "id": 3,
+  "name": "London",
+  "latitude": 51.50853,
+  "longitude": -0.12574
+}
+```
+
+If the request body's city has a `name` matching an already existing city in the collection, then the web API cannot create another city with the same `name`, so it'll respond with status code `409 Conflict`.
+
+Status Code: `409 Conflict`
+
+Content type: `application/json`
+
+```json
+{
+  "message": "City with city name London already exists."
+}
+```
+
+### Update City
+
+[[Back To Top]](#weather-api)
+
+#### Request
+
+**PUT** `api/v1/city/{cityName}`
+
+For example, `api/v1/city/London`
+
+with request body
+
+```json
+{
+  "name": "London",
+  "latitude": 12.34,
+  "longitude": 3.33
+}
+```
+
+#### Request samples
+
+Status Code: `200 OK`
+
+Content type: `application/json`
+
+```json
+{
+  "id": 3,
+  "name": "London",
+  "latitude": 12.34,
+  "longitude": 3.33
+}
+```
+
+If the endpoint's `{cityName}` does not match with the request body's city's `name`, then the API will respond with status code `400 Bad Request`.
+
+Status Code: `400 Bad Request`
+
+Content type: `application/json`
+
+```json
+{
+  "message": "CityName New York should match city.name London"
+}
+```
+
+If the endpoint's `{cityName}` does not match any city's name in collection, then the API will respond with status code `404 Not Found`.
+
+Status Code: `404 Not Found`
+
+Content type: `application/json`
+
+```json
+{
+  "message": "CityName stringg not found in collection"
+}
+```
+
+### Delete City
+
+[[Back To Top]](#weather-api)
+
+#### Request
+
+**DELETE** `api/v1/city/{cityName}`
+
+For example, `api/v1/city/London`
+
+#### Request samples
+
+Status Code: `204 No Content`
+
+If the response status code is `204 No Content`, then the city with `{cityName}` is deleted
+
+If the endpoint's `{cityName}` does not match with the request body's city's `name`, then the API will respond with status code `404 Not Found`.
+
+Status Code: `404 Not Found`
+
+Content type: `application/json`
+
+```json
+{
+  "message": "CityName London not found in collection"
+}
 ```
