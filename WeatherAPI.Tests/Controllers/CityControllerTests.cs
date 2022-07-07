@@ -30,15 +30,15 @@ internal class CityControllerTests
         {
             new City()
             {
-                name = "Berlin",
-                latitude = 52.52,
-                longitude = 13.419998
+                Name = "Berlin",
+                Latitude = 52.52,
+                Longitude = 13.419998
             },
             new City()
             {
-                name = "Manchester",
-                latitude = 30.2,
-                longitude = 15.419998
+                Name = "Manchester",
+                Latitude = 30.2,
+                Longitude = 15.419998
             }
         };
 
@@ -59,9 +59,9 @@ internal class CityControllerTests
         // Arrange
         City expectedCity = new City()
         {
-            name = "Berlin",
-            latitude = 52.52,
-            longitude = 13.419998
+            Name = "Berlin",
+            Latitude = 52.52,
+            Longitude = 13.419998
         };
 
         _cityService.Setup(c => c.GetCityByCityNameAsync("Berlin"))
@@ -95,12 +95,12 @@ internal class CityControllerTests
         // Arrange
         City newCity = new City()
         {
-            name = "NewCity",
-            latitude = 10,
-            longitude = 20
+            Name = "NewCity",
+            Latitude = 10,
+            Longitude = 20
         };
 
-        _cityService.Setup(c => c.CityExists(newCity.name))
+        _cityService.Setup(c => c.CityExists(newCity.Name))
             .ReturnsAsync(false);
 
         _cityService.Setup(c => c.AddCityAsync(newCity))
@@ -120,12 +120,12 @@ internal class CityControllerTests
         // Arrange
         City newCity = new City()
         {
-            name = "NewCity",
-            latitude = 10,
-            longitude = 20
+            Name = "NewCity",
+            Latitude = 10,
+            Longitude = 20
         };
 
-        _cityService.Setup(c => c.CityExists(newCity.name))
+        _cityService.Setup(c => c.CityExists(newCity.Name))
             .ReturnsAsync(true);
 
         // Act
@@ -141,9 +141,9 @@ internal class CityControllerTests
         // Arrange
         City cityToUpdate = new City()
         {
-            name = "SomeCity",
-            latitude = 10,
-            longitude = 20
+            Name = "SomeCity",
+            Latitude = 10,
+            Longitude = 20
         };
 
         _cityService.Setup(c => c.CityExists("SomeCity"))
@@ -166,9 +166,9 @@ internal class CityControllerTests
         // Arrange
         City cityToUpdate = new City()
         {
-            name = "SomeCity",
-            latitude = 10,
-            longitude = 20
+            Name = "SomeCity",
+            Latitude = 10,
+            Longitude = 20
         };
 
         _cityService.Setup(c => c.CityExists("SomeCity"))
@@ -190,9 +190,9 @@ internal class CityControllerTests
         // Arrange
         City cityToUpdate = new City()
         {
-            name = "SomeCity",
-            latitude = 10,
-            longitude = 20
+            Name = "SomeCity",
+            Latitude = 10,
+            Longitude = 20
         };
 
         _cityService.Setup(c => c.CityExists("SomeCity"))

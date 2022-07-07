@@ -25,15 +25,15 @@ namespace WeatherAPI.Tests.Services
             {
                 new City()
                 {
-                    name = "Berlin",
-                    latitude = 52.52,
-                    longitude = 13.419998
+                    Name = "Berlin",
+                    Latitude = 52.52,
+                    Longitude = 13.419998
                 },
                 new City()
                 {
-                    name = "Manchester",
-                    latitude = 30.2,
-                    longitude = 15.419998
+                    Name = "Manchester",
+                    Latitude = 30.2,
+                    Longitude = 15.419998
                 }
             };
 
@@ -151,9 +151,9 @@ namespace WeatherAPI.Tests.Services
                 // Arrange
                 var newCity = new City()
                 {
-                    name = "New City",
-                    latitude = 52.52,
-                    longitude = 13.419998
+                    Name = "New City",
+                    Latitude = 52.52,
+                    Longitude = 13.419998
                 };
 
                 // Act
@@ -161,11 +161,11 @@ namespace WeatherAPI.Tests.Services
 
                 // Assert
                 result.Should().BeOfType(typeof(City));
-                result.name.Should().Be(newCity.name);
-                result.latitude.Should().Be(newCity.latitude);
-                result.longitude.Should().Be(newCity.longitude);
+                result.Name.Should().Be(newCity.Name);
+                result.Latitude.Should().Be(newCity.Latitude);
+                result.Longitude.Should().Be(newCity.Longitude);
 
-                var doesCityExists = await cityService.CityExists(newCity.name);
+                var doesCityExists = await cityService.CityExists(newCity.Name);
                 doesCityExists.Should().BeTrue();
             }
         }
@@ -181,9 +181,9 @@ namespace WeatherAPI.Tests.Services
                 // Arrange
                 var updatedCity = new City()
                 {
-                    name = "Manchester",
-                    latitude = 0.1,
-                    longitude = 0.2
+                    Name = "Manchester",
+                    Latitude = 0.1,
+                    Longitude = 0.2
                 };
 
                 // Act
@@ -191,9 +191,9 @@ namespace WeatherAPI.Tests.Services
 
                 // Assert
                 result.Should().BeOfType(typeof(City));
-                result.name.Should().Be(updatedCity.name);
-                result.latitude.Should().Be(updatedCity.latitude);
-                result.longitude.Should().Be(updatedCity.longitude);
+                result.Name.Should().Be(updatedCity.Name);
+                result.Latitude.Should().Be(updatedCity.Latitude);
+                result.Longitude.Should().Be(updatedCity.Longitude);
             }
         }
 
@@ -222,9 +222,9 @@ namespace WeatherAPI.Tests.Services
             // Arrange
             var expectedCity = new City()
             {
-                name = "SomeCity",
-                latitude = 12.34,
-                longitude = 12.42
+                Name = "SomeCity",
+                Latitude = 12.34,
+                Longitude = 12.42
             };
 
             string responseString = "{\"results\":" +
@@ -248,9 +248,9 @@ namespace WeatherAPI.Tests.Services
                 var result = await cityService.GetCityByCityNameAsync("SomeCity");
 
                 // Assert
-                result.name.Should().Be(expectedCity.name);
-                result.latitude.Should().Be(expectedCity.latitude);
-                result.longitude.Should().Be(expectedCity.longitude);
+                result.Name.Should().Be(expectedCity.Name);
+                result.Latitude.Should().Be(expectedCity.Latitude);
+                result.Longitude.Should().Be(expectedCity.Longitude);
             }
         }
 
@@ -259,9 +259,9 @@ namespace WeatherAPI.Tests.Services
         {
             City expectedCity = new City()
             {
-                name = "Manchester",
-                latitude = 30.2,
-                longitude = 15.419998
+                Name = "Manchester",
+                Latitude = 30.2,
+                Longitude = 15.419998
             };
 
             using (var context = new CityContext(options))
@@ -272,9 +272,9 @@ namespace WeatherAPI.Tests.Services
                 var result = await cityService.GetCityByCityNameAsync("Manchester");
 
                 // Assert
-                result.name.Should().Be(expectedCity.name);
-                result.latitude.Should().Be(expectedCity.latitude);
-                result.longitude.Should().Be(expectedCity.longitude);
+                result.Name.Should().Be(expectedCity.Name);
+                result.Latitude.Should().Be(expectedCity.Latitude);
+                result.Longitude.Should().Be(expectedCity.Longitude);
             }
         }
     }

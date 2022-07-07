@@ -2,10 +2,10 @@
 
 public class Weather
 {
-    public double latitude { get; set; }
-    public double longitude { get; set; }
-    public WeatherCode weatherCode { get; set; }
-    public string whatToPrepare { get; set; }
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
+    public WeatherCode WeatherCode { get; set; }
+    public string WhatToPrepare { get; set; }
 }
 
 public enum WeatherCode

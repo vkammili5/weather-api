@@ -22,7 +22,7 @@ namespace WeatherAPI.Services
 
         public async Task<bool> CityExists(string cityName) 
         {
-            return _cityContext.Cities.Any(b => b.name.ToLower() == cityName.ToLower());
+            return _cityContext.Cities.Any(b => b.Name.ToLower() == cityName.ToLower());
         }
 
         public async Task<City> AddCityAsync(City city) {
@@ -33,11 +33,11 @@ namespace WeatherAPI.Services
 
         public async Task<City> UpdateCityAsync(City city)
         {
-            var existingCityFound = await FindCityByNameAsync(city.name);
+            var existingCityFound = await FindCityByNameAsync(city.Name);
 
-            existingCityFound.name = city.name;
-            existingCityFound.latitude = city.latitude;
-            existingCityFound.longitude = city.longitude;
+            existingCityFound.Name = city.Name;
+            existingCityFound.Latitude = city.Latitude;
+            existingCityFound.Longitude = city.Longitude;
             _cityContext.SaveChanges();
             return existingCityFound;
         }
@@ -82,16 +82,16 @@ namespace WeatherAPI.Services
 
             City city = new City()
             {
-                name = firstLocation["name"].ToString(),
-                latitude = double.Parse(firstLocation["latitude"].ToString()),
-                longitude = double.Parse(firstLocation["longitude"].ToString())
+                Name = firstLocation["name"].ToString(),
+                Latitude = double.Parse(firstLocation["latitude"].ToString()),
+                Longitude = double.Parse(firstLocation["longitude"].ToString())
             };
             return city;
         }
 
         private async Task<City> FindCityByNameAsync(string cityName)
         {
-            var city = _cityContext.Cities.SingleOrDefault(x => x.name.ToLower() == cityName.ToLower());
+            var city = _cityContext.Cities.SingleOrDefault(x => x.Name.ToLower() == cityName.ToLower());
             return city;
         }
     }

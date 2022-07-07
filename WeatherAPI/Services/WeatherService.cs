@@ -50,10 +50,10 @@ public class WeatherService : IWeatherService
 
         return new()
         {
-            latitude = double.Parse(responseObject["latitude"]!.ToString()),
-            longitude = double.Parse(responseObject["longitude"]!.ToString()),
-            weatherCode = weatherCode,
-            whatToPrepare = GetWhatToPrepare(weatherCode)
+            Latitude = double.Parse(responseObject["latitude"]!.ToString()),
+            Longitude = double.Parse(responseObject["longitude"]!.ToString()),
+            WeatherCode = weatherCode,
+            WhatToPrepare = GetWhatToPrepare(weatherCode)
         };
     }
 

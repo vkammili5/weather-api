@@ -37,7 +37,7 @@ public class WeatherController : ControllerBase
         try
         {
             City city = await _cityService.GetCityByCityNameAsync(cityName);
-            Weather weather = await _weatherService.GetWeatherByLatLonAsync(city.latitude, city.longitude);
+            Weather weather = await _weatherService.GetWeatherByLatLonAsync(city.Latitude, city.Longitude);
             return weather; 
         }
         catch (HttpRequestException ex)

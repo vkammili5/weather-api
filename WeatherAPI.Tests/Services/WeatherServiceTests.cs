@@ -47,10 +47,10 @@ internal class WeatherServiceTests
 
         Weather expectedWeather = new Weather()
         {
-            latitude = 53.48,
-            longitude = -2.2400002,
-            weatherCode = WeatherCode.ClearSky,
-            whatToPrepare = "wear summer clothings, wear a cap, apply sunscreen"
+            Latitude = 53.48,
+            Longitude = -2.2400002,
+            WeatherCode = WeatherCode.ClearSky,
+            WhatToPrepare = "wear summer clothings, wear a cap, apply sunscreen"
         };
 
         // Act
