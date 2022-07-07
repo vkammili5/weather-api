@@ -14,6 +14,7 @@ namespace WeatherAPI.Services
             _cityContext = cityContext;
             _httpClientService = httpClientService;
         }
+
         public async Task<List<City>> GetAllCity() 
         {
             return _cityContext.Cities.ToList();
@@ -21,7 +22,7 @@ namespace WeatherAPI.Services
 
         public async Task<bool> CityExists(string cityName) 
         {
-            return _cityContext.Cities.Any(b => b.name == cityName);
+            return _cityContext.Cities.Any(b => b.name.ToLower() == cityName.ToLower());
         }
 
         public async Task<City> AddCityAsync(City city) {
@@ -62,7 +63,6 @@ namespace WeatherAPI.Services
             string url = "https://geocoding-api.open-meteo.com/v1/search?" +
                                             $"name={cityName}";
             
-            
             (string responseString, bool isSuccess) = await _httpClientService.GetAsync(url);
             if (!isSuccess)
             {
@@ -74,8 +74,8 @@ namespace WeatherAPI.Services
             city = await AddCityAsync(city);
             return city;             
         }
-        private static async Task<City> parseJsonStringToCity(string responseString) {            
-
+        private static async Task<City> parseJsonStringToCity(string responseString) 
+        {
             JObject responseObject = JObject.Parse(responseString);           
 
             var firstLocation = responseObject["results"].First();
@@ -91,7 +91,7 @@ namespace WeatherAPI.Services
 
         private async Task<City> FindCityByNameAsync(string cityName)
         {
-            var city = _cityContext.Cities.SingleOrDefault(x => x.name == cityName);
+            var city = _cityContext.Cities.SingleOrDefault(x => x.name.ToLower() == cityName.ToLower());
             return city;
         }
     }
