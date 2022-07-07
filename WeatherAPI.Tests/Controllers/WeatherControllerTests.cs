@@ -31,17 +31,8 @@ internal class WeatherControllerTests
         Weather expectedWeather = new Weather() {
             latitude = 51.5,
             longitude = -0.12,
-            startDate = DateTime.Today,
-            endDate = DateTime.Today.AddDays(7),
-            weatherCodes = new List<WeatherCode>() {
-                WeatherCode.ClearSky,
-                WeatherCode.ClearSky,
-                WeatherCode.ClearSky,
-                WeatherCode.Fog,
-                WeatherCode.Fog,
-                WeatherCode.Fog,
-                WeatherCode.RainOrWorse,
-            }
+            weatherCode = WeatherCode.ClearSky,
+            whatToPrepare = "wear summer clothings, wear a cap, apply sunscreen"
         };
 
         _mockWeatherService.Setup(w => w.GetWeatherByLatLonAsync(51.5002, -0.1262))
@@ -76,17 +67,8 @@ internal class WeatherControllerTests
         {
             latitude = 52.52,
             longitude = 13.419998,
-            startDate = DateTime.Today,
-            endDate = DateTime.Today.AddDays(7),
-            weatherCodes = new List<WeatherCode>() {
-                WeatherCode.ClearSky,
-                WeatherCode.ClearSky,
-                WeatherCode.ClearSky,
-                WeatherCode.ClearSky,
-                WeatherCode.Cloudy,
-                WeatherCode.Cloudy,
-                WeatherCode.Cloudy,
-            }
+            weatherCode = WeatherCode.ClearSky,
+            whatToPrepare = "wear summer clothings, wear a cap, apply sunscreen"
         };
         City expectedCity = new City()
         {

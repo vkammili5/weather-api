@@ -42,25 +42,18 @@ public class WeatherService : IWeatherService
 
         var weatherCodeJTokenList = responseObject["daily"]!["weathercode"]!.ToList();
 
-        List<WeatherCode> weatherCodeList = weatherCodeJTokenList.Select(x =>
+        WeatherCode weatherCode = weatherCodeJTokenList.Select(x =>
         {
             int weatherCodeNumber = int.Parse(x.ToString());
             return NumberToWeatherCode(weatherCodeNumber);
-        }).ToList();
+        }).First();
 
-        Weather weather = ResponseObjectToWeather(responseObject, weatherCodeList);
-        return weather;
-    }
-
-    private static Weather ResponseObjectToWeather(JObject responseObject, List<WeatherCode> weatherCodeList)
-    {
         return new()
         {
             latitude = double.Parse(responseObject["latitude"]!.ToString()),
             longitude = double.Parse(responseObject["longitude"]!.ToString()),
-            startDate = DateTime.Parse(responseObject["daily"]!["time"]!.First().ToString()),
-            endDate = DateTime.Parse(responseObject["daily"]!["time"]!.Last().ToString()),
-            weatherCodes = weatherCodeList
+            weatherCode = weatherCode,
+            whatToPrepare = GetWhatToPrepare(weatherCode)
         };
     }
 
@@ -72,6 +65,18 @@ public class WeatherService : IWeatherService
             <= 3 => WeatherCode.Cloudy,
             < 51 => WeatherCode.Fog,
             _ => WeatherCode.RainOrWorse
+        };
+    }
+
+    private static string GetWhatToPrepare(WeatherCode weatherCode)
+    {
+        return weatherCode switch
+        {
+            WeatherCode.ClearSky => "wear summer clothings, wear a cap, apply sunscreen",
+            WeatherCode.Fog => "bring flash light",
+            WeatherCode.Cloudy => "bring coat",
+            WeatherCode.RainOrWorse => "bring umbrella and rain coat",
+            _ => "wear normal clothes"
         };
     }
 }

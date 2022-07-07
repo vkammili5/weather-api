@@ -33,7 +33,7 @@ internal class WeatherServiceTests
             "\"utc_offset_seconds\":3600," +
             "\"daily\":{ " +
             "\"time\":[\"2022-07-05\",\"2022-07-06\",\"2022-07-07\",\"2022-07-08\",\"2022-07-09\",\"2022-07-10\",\"2022-07-11\"]," +
-            "\"weathercode\":[3.0,3.0,3.0,3.0,3.0,45.0,45.0]}," +
+            "\"weathercode\":[0.0,3.0,3.0,3.0,3.0,45.0,45.0]}," +
             "\"daily_units\":{ \"time\":\"iso8601\",\"weathercode\":\"wmo code\"}}";
 
         string url = "https://api.open-meteo.com/v1/forecast?" +
@@ -49,17 +49,8 @@ internal class WeatherServiceTests
         {
             latitude = 53.48,
             longitude = -2.2400002,
-            startDate = DateTime.Today,
-            endDate = DateTime.Today.AddDays(6),
-            weatherCodes = new List<WeatherCode>() {
-                WeatherCode.Cloudy,
-                WeatherCode.Cloudy,
-                WeatherCode.Cloudy,
-                WeatherCode.Cloudy,
-                WeatherCode.Cloudy,
-                WeatherCode.Fog,
-                WeatherCode.Fog,
-            }
+            weatherCode = WeatherCode.ClearSky,
+            whatToPrepare = "wear summer clothings, wear a cap, apply sunscreen"
         };
 
         // Act
