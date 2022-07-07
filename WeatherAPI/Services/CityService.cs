@@ -1,18 +1,20 @@
 ﻿using Newtonsoft.Json.Linq;
 using WeatherAPI.Models;
+using WeatherAPI.Services.HttpClients;
 
 namespace WeatherAPI.Services
 {
     public class CityService : ICityService
     {
-        public readonly HttpClient _httpClient;
+        public readonly IHttpClientService _httpClientService;
         public readonly CityContext _cityContext;
         
-        public CityService(CityContext cityContext) 
+        public CityService(CityContext cityContext, IHttpClientService httpClientService) 
         {
             _cityContext = cityContext;
-            _httpClient = new HttpClient();
+            _httpClientService = httpClientService;
         }
+
         public async Task<List<City>> GetAllCity() 
         {
             return _cityContext.Cities.ToList();
@@ -20,7 +22,7 @@ namespace WeatherAPI.Services
 
         public async Task<bool> CityExists(string cityName) 
         {
-            return _cityContext.Cities.Any(b => b.name == cityName);
+            return _cityContext.Cities.Any(b => b.name.ToLower() == cityName.ToLower());
         }
 
         public async Task<City> AddCityAsync(City city) {
@@ -60,16 +62,21 @@ namespace WeatherAPI.Services
         {
             string url = "https://geocoding-api.open-meteo.com/v1/search?" +
                                             $"name={cityName}";
-            HttpResponseMessage response = await _httpClient.GetAsync(url);
-
-            string responseString = await response.Content.ReadAsStringAsync();
-
-            JObject responseObject = JObject.Parse(responseString);
-            var responseObjectResults = responseObject["results"];
-
-            if (!response.IsSuccessStatusCode || responseObjectResults is null)
+            
+            (string responseString, bool isSuccess) = await _httpClientService.GetAsync(url);
+            if (!isSuccess)
+            {
                 throw new HttpRequestException($"No geocoding found for {cityName}, " +
                     $"please do POST request to /api/v1/city endpoint to add new city.");
+            }
+
+            City city = await parseJsonStringToCity(responseString);
+            city = await AddCityAsync(city);
+            return city;             
+        }
+        private static async Task<City> parseJsonStringToCity(string responseString) 
+        {
+            JObject responseObject = JObject.Parse(responseString);           
 
             var firstLocation = responseObject["results"].First();
 
@@ -79,14 +86,12 @@ namespace WeatherAPI.Services
                 latitude = double.Parse(firstLocation["latitude"].ToString()),
                 longitude = double.Parse(firstLocation["longitude"].ToString())
             };
-
-            city = await AddCityAsync(city);
             return city;
         }
 
         private async Task<City> FindCityByNameAsync(string cityName)
         {
-            var city = _cityContext.Cities.SingleOrDefault(x => x.name == cityName);
+            var city = _cityContext.Cities.SingleOrDefault(x => x.name.ToLower() == cityName.ToLower());
             return city;
         }
     }

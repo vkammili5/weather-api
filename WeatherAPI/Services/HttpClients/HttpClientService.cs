@@ -20,7 +20,7 @@ public class HttpClientService : IHttpClientService
             return (errorReason, false);
         }
 
-        bool isGeoApiFail = responseObject["latitude"] is null && responseObject["result"] is null;
+        bool isGeoApiFail = responseObject["latitude"] is null && responseObject["results"] is null;
         if (isGeoApiFail)
         {
             return ("", false);
