@@ -6,7 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using WeatherAPI.Controllers;
 using WeatherAPI.Models;
-using WeatherAPI.Services;
+using WeatherAPI.Services.CityServices;
+using WeatherAPI.Services.WeatherServices;
 
 namespace WeatherAPI.Tests.Controllers;
 internal class WeatherControllerTests
@@ -39,7 +40,7 @@ internal class WeatherControllerTests
             .ReturnsAsync(expectedWeather);
 
         // Act
-        var result = await _controller.GetWeatherByLatLonAsync(51.5002, -0.1262);
+        var result = await _controller.GetWeatherByLatLon(51.5002, -0.1262);
 
         // Assert
         result.Should().BeOfType(typeof(ActionResult<Weather>));
@@ -54,7 +55,7 @@ internal class WeatherControllerTests
             .Throws<HttpRequestException>();
 
         // Act
-        var result = await _controller.GetWeatherByLatLonAsync(510.5002, -0.1262);
+        var result = await _controller.GetWeatherByLatLon(510.5002, -0.1262);
 
         // Assert
         result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
@@ -84,7 +85,7 @@ internal class WeatherControllerTests
             .ReturnsAsync(expectedWeather);
 
         //act
-        var result = await _controller.GetWeatherByCityNameAsync("Berlin");
+        var result = await _controller.GetWeatherByCityName("Berlin");
 
         // Assert
         result.Should().BeOfType(typeof(ActionResult<Weather>));
@@ -98,7 +99,7 @@ internal class WeatherControllerTests
             Throws<HttpRequestException>();
 
         //act
-        var result = await _controller.GetWeatherByCityNameAsync("dfgsh");
+        var result = await _controller.GetWeatherByCityName("dfgsh");
 
         //Assert
         result.Result.Should().BeOfType(typeof(BadRequestObjectResult));

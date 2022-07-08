@@ -5,7 +5,7 @@ using System.Text.Json;
 using WeatherAPI.Models;
 using WeatherAPI.Services.HttpClients;
 
-namespace WeatherAPI.Services;
+namespace WeatherAPI.Services.WeatherServices;
 
 public class WeatherService : IWeatherService
 {
@@ -26,10 +26,8 @@ public class WeatherService : IWeatherService
 
         (string responseString, bool isSuccess) = await _httpClientService.GetAsync(url);
 
-        if (!isSuccess)
-        {
+        if (!isSuccess) 
             throw new HttpRequestException(responseString);
-        }
 
         Weather weather = ParseJsonStringToWeather(responseString);
 
@@ -42,11 +40,8 @@ public class WeatherService : IWeatherService
 
         var weatherCodeJTokenList = responseObject["daily"]!["weathercode"]!.ToList();
 
-        WeatherCode weatherCode = weatherCodeJTokenList.Select(x =>
-        {
-            int weatherCodeNumber = int.Parse(x.ToString());
-            return NumberToWeatherCode(weatherCodeNumber);
-        }).First();
+        int weatherCodeNumber = int.Parse(weatherCodeJTokenList.First().ToString());
+        WeatherCode weatherCode = NumberToWeatherCode(weatherCodeNumber);
 
         return new()
         {

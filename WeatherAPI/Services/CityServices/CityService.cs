@@ -2,33 +2,34 @@
 using WeatherAPI.Models;
 using WeatherAPI.Services.HttpClients;
 
-namespace WeatherAPI.Services
+namespace WeatherAPI.Services.CityServices
 {
     public class CityService : ICityService
     {
         public readonly IHttpClientService _httpClientService;
         public readonly CityContext _cityContext;
-        
-        public CityService(CityContext cityContext, IHttpClientService httpClientService) 
+
+        public CityService(CityContext cityContext, IHttpClientService httpClientService)
         {
             _cityContext = cityContext;
             _httpClientService = httpClientService;
         }
 
-        public async Task<List<City>> GetAllCity() 
+        public async Task<List<City>> GetAllCity()
         {
             return _cityContext.Cities.ToList();
         }
 
-        public async Task<bool> CityExists(string cityName) 
+        public async Task<bool> CityExists(string cityName)
         {
             return _cityContext.Cities.Any(b => b.Name.ToLower() == cityName.ToLower());
         }
 
-        public async Task<City> AddCityAsync(City city) {
+        public async Task<City> AddCityAsync(City city)
+        {
             _cityContext.Add(city);
             _cityContext.SaveChanges();
-            return city;            
+            return city;
         }
 
         public async Task<City> UpdateCityAsync(City city)
@@ -42,14 +43,14 @@ namespace WeatherAPI.Services
             return existingCityFound;
         }
 
-        public async Task DeleteCityAsync(string cityName) 
+        public async Task DeleteCityAsync(string cityName)
         {
             var existingCityFound = await FindCityByNameAsync(cityName);
 
             _cityContext.Remove(existingCityFound);
             _cityContext.SaveChanges();
         }
-        
+
         public async Task<City> GetCityByCityNameAsync(string cityName)
         {
             if (await CityExists(cityName))
@@ -62,7 +63,7 @@ namespace WeatherAPI.Services
         {
             string url = "https://geocoding-api.open-meteo.com/v1/search?" +
                                             $"name={cityName}";
-            
+
             (string responseString, bool isSuccess) = await _httpClientService.GetAsync(url);
             if (!isSuccess)
             {
@@ -72,11 +73,12 @@ namespace WeatherAPI.Services
 
             City city = await parseJsonStringToCity(responseString);
             city = await AddCityAsync(city);
-            return city;             
+            return city;
         }
-        private static async Task<City> parseJsonStringToCity(string responseString) 
+
+        private static async Task<City> parseJsonStringToCity(string responseString)
         {
-            JObject responseObject = JObject.Parse(responseString);           
+            JObject responseObject = JObject.Parse(responseString);
 
             var firstLocation = responseObject["results"].First();
 

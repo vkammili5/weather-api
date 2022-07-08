@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WeatherAPI.Models;
-using WeatherAPI.Services;
 using WeatherAPI.Services.HttpClients;
+using WeatherAPI.Services.WeatherServices;
 
 namespace WeatherAPI.Tests.Services;
 internal class WeatherServiceTests

@@ -1,6 +1,6 @@
 ﻿using WeatherAPI.Models;
 
-namespace WeatherAPI.Services
+namespace WeatherAPI.Services.CityServices
 {
     public interface ICityService
     {
@@ -9,7 +9,6 @@ namespace WeatherAPI.Services
         Task<City> AddCityAsync(City city);
         Task<City> UpdateCityAsync(City cityToUpdate);
         Task DeleteCityAsync(string cityName);
-
         Task<bool> CityExists(string cityName);
     }
 }

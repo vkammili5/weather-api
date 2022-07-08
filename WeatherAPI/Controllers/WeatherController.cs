@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WeatherAPI.Models;
-using WeatherAPI.Services;
+using WeatherAPI.Services.CityServices;
+using WeatherAPI.Services.WeatherServices;
 
 namespace WeatherAPI.Controllers;
 
@@ -18,7 +19,7 @@ public class WeatherController : ControllerBase
     }
 
     [HttpGet("{latitude}/{longitude}")]
-    public async Task<ActionResult<Weather>> GetWeatherByLatLonAsync(double latitude, double longitude)
+    public async Task<ActionResult<Weather>> GetWeatherByLatLon(double latitude, double longitude)
     {
         try
         {
@@ -32,7 +33,7 @@ public class WeatherController : ControllerBase
     }
 
     [HttpGet("{cityName}")]
-    public async Task<ActionResult<Weather>> GetWeatherByCityNameAsync(string cityName)
+    public async Task<ActionResult<Weather>> GetWeatherByCityName(string cityName)
     {
         try
         {
@@ -43,6 +44,6 @@ public class WeatherController : ControllerBase
         catch (HttpRequestException ex)
         {
             return BadRequest(ex.Message);
-        }        
+        }
     }
 }

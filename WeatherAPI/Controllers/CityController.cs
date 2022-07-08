@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WeatherAPI.Models;
-using WeatherAPI.Services;
+using WeatherAPI.Services.CityServices;
 
 namespace WeatherAPI.Controllers;
 
@@ -20,7 +20,7 @@ public class CityController : ControllerBase
         return await _cityService.GetAllCity();
     }
 
-    [HttpGet("{cityName}", Name = "Get")]
+    [HttpGet("{cityName}")]
     public async Task<ActionResult<City>> GetCityByCityName(string cityName)
     {
         try
