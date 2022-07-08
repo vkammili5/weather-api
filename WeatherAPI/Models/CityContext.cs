@@ -1,7 +1,6 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 
-
 namespace WeatherAPI.Models
 {
     public class CityContext : DbContext
@@ -11,7 +10,6 @@ namespace WeatherAPI.Models
         }
 
         public DbSet<City> Cities { get; set; }
-       
     }
 }
 

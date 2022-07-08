@@ -7,6 +7,7 @@ using WeatherAPI.Models;
 using WeatherAPI.Services;
 using WeatherAPI.Services.HttpClients;
 using Microsoft.EntityFrameworkCore;
+using WeatherAPI.Services.CityServices;
 
 namespace WeatherAPI.Tests.Services
 {

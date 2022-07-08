@@ -5,7 +5,7 @@ using System.Text.Json;
 using WeatherAPI.Models;
 using WeatherAPI.Services.HttpClients;
 
-namespace WeatherAPI.Services;
+namespace WeatherAPI.Services.WeatherServices;
 
 public class WeatherService : IWeatherService
 {

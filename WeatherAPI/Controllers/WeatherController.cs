@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WeatherAPI.Models;
-using WeatherAPI.Services;
+using WeatherAPI.Services.CityServices;
+using WeatherAPI.Services.WeatherServices;
 
 namespace WeatherAPI.Controllers;
 
@@ -43,6 +44,6 @@ public class WeatherController : ControllerBase
         catch (HttpRequestException ex)
         {
             return BadRequest(ex.Message);
-        }        
+        }
     }
 }

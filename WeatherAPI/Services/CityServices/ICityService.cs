@@ -1,6 +1,6 @@
 ﻿using WeatherAPI.Models;
 
-namespace WeatherAPI.Services
+namespace WeatherAPI.Services.CityServices
 {
     public interface ICityService
     {

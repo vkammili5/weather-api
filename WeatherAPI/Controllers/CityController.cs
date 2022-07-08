@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WeatherAPI.Models;
-using WeatherAPI.Services;
+using WeatherAPI.Services.CityServices;
 
 namespace WeatherAPI.Controllers;
 

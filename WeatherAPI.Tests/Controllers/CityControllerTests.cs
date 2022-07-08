@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WeatherAPI.Controllers;
 using WeatherAPI.Models;
-using WeatherAPI.Services;
+using WeatherAPI.Services.CityServices;
 
 namespace WeatherAPI.Tests.Controllers;
 internal class CityControllerTests

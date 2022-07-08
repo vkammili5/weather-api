@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using WeatherAPI.Models;
-using WeatherAPI.Services;
+using WeatherAPI.Services.CityServices;
 using WeatherAPI.Services.HttpClients;
+using WeatherAPI.Services.WeatherServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
