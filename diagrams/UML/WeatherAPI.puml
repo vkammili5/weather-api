@@ -6,33 +6,33 @@ class CityController {
 
     + CityController(cityService : ICityService)
 
-    + GetCityList() : ActionResult<IEnumerable<City>>
+    + GetCityList() : Task<ActionResult<IEnumerable<City>>>
 
-    + GetCityByCityName(cityName : string) : ActionResult<City>
+    + GetCityByCityName(cityName : string) : Task<ActionResult<City>>
 
-    + AddCity(city : City) : ActionResult<City>
+    + AddCity(city : City) : Task<ActionResult<City>>
 
-    + UpdateCity(cityName : string, city : City) : ActionResult<City>
+    + UpdateCity(cityName : string, city : City) : Task<ActionResult<City>>
 
-    + DeleteCity(cityName : string) : IActionResult
+    + DeleteCity(cityName : string) : Task<IActionResult>
 }
 
 interface ICityService <<interface>> {
-    + GetAllCity() : List<City>
+    + GetAllCity() : Task<List<City>>
 
-    + GetCityByCityName(cityName : string) : City
+    + GetCityByCityName(cityName : string) : Task<City>
 
-    + AddCity(city : City) : City
+    + AddCity(city : City) : Task<City>
 
-    + UpdateCity(cityName : string, city : City) : City
+    + UpdateCity(cityName : string, city : City) : Task<City>
 
-    + DeleteCity(cityName : string) : void
+    + DeleteCity(cityName : string) : Task
 
-    + CityExists(cityName : string) : bool
+    + CityExists(cityName : string) : Task<bool>
 }
 
 class CityService {
-    - httpClientService : IHttpClient
+    - httpClientService : IHttpClientService
     - cityContext : CityContext
 
     + CityService(\n\
@@ -41,7 +41,8 @@ class CityService {
 }
 
 class City {
-    + CityName : string
+    + Id : int
+    + Name : string
     + latitude : double
     + longitude : double
 }
@@ -58,18 +59,18 @@ class WeatherController {
     + GetWeatherByLatLon(\n\
         latitude : double, \n\
         longitude : double\n\
-    ) : ActionResult<Weather>
+    ) : Task<ActionResult<Weather>>
 
     + GetWeatherByCityName(\n\
         cityName : string\n\
-    ) : ActionResult<Weather>
+    ) : Task<ActionResult<Weather>>
 }
 
 interface IWeatherService <<interface>> {
     + GetWeatherByLatLon(\n\
         latitude : double, \n\
         longitude : double\n\
-    ) : Weather
+    ) : Task<Weather>
 }
 
 class WeatherService {
@@ -82,9 +83,8 @@ class WeatherService {
 class Weather {
     + Latitude : double
     + Longitude : double
-    + StartDate : DateTime
-    + EndDate : DateTime
-    + WeatherCodes : List<WeatherCode>
+    + WeatherCodes : WeatherCode
+    + WhatToPrepare : string
 }
 
 Enum WeatherCode {
@@ -95,13 +95,13 @@ Enum WeatherCode {
 }
 
 interface IHttpClientService <<interface>> {
-    + GetAsync(url : string) : (string, bool)
+    + GetAsync(url : string) : Task<(string, bool)>
 }
 
 class HttpClientService {
     - httpClient : HttpClient
 	
-	+ GetAsync(url : string) : (string, bool)
+	+ GetAsync(url : string) : Task<(string, bool)>
 }
 
 CityController o-- ICityService
