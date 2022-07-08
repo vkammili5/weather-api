@@ -31,6 +31,68 @@ Here we have 3 folders:
 
 ## `Weather` endpoints
 
+### Get Weather By City Name
+
+[[Back To Top]](#weather-api)
+
+### Request
+
+**GET** api/v1/weather/{cityName}
+
+For example api/v1/weather/Berlin
+
+### Response samples
+
+Status Code: `200 OK`
+
+Content type: `application/json`
+
+```json
+{
+  "latitude": 52.52,
+  "longitude": 13.419998,
+  "weatherCode": 1,
+  "whatToPrepare": "bring coat"
+}
+```
+
+If `{cityName}` does not match any city name known by the API, then the response status code would be `404 Not Found`, with response body:
+
+```
+No geocoding found for BerlinCItys, please do POST request to /api/v1/city endpoint to add new city.
+```
+### Get Weather By Latitude Longitude
+
+[[Back To Top]](#weather-api)
+
+### Request
+
+**GET** api/v1/weather/{latitude}/{longitude}
+
+For example api/v1/weather/52.52/13.41
+
+### Response samples
+
+Status Code: `200 OK`
+
+Content type: `application/json`
+
+```json
+{
+  "latitude": 52.52,
+  "longitude": 13.419998,
+  "weatherCode": 1,
+  "whatToPrepare": "bring coat"
+}
+```
+
+If `{latitude}{longitude}` not in the ange known by the API, then the response status code would be `404 Not Found`, with response body:
+
+```
+Latitude must be in range of -90 to 90°. Given: 99.0.
+
+```
+
 ## `City` endpoints
 
 ### Get City By City Name
