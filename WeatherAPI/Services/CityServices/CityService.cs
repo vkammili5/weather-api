@@ -75,6 +75,7 @@ namespace WeatherAPI.Services.CityServices
             city = await AddCityAsync(city);
             return city;
         }
+
         private static async Task<City> parseJsonStringToCity(string responseString)
         {
             JObject responseObject = JObject.Parse(responseString);

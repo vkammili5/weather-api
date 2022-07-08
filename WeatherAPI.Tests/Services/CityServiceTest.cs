@@ -42,7 +42,6 @@ namespace WeatherAPI.Tests.Services
                 .UseInMemoryDatabase(databaseName: "cityweatherapi")
                 .Options;
 
-            // Insert seed data into the database using one instance of the context
             using (var context = new CityContext(options))
             {
                 foreach (var city in context.Cities)
@@ -58,7 +57,6 @@ namespace WeatherAPI.Tests.Services
         [Test]
         public async Task GetAllCity_Should_Return_AllCity()
         {
-            // Use a clean instance of the context to run the test
             using (var context = new CityContext(options))
             {
                 var cityService = new CityService(context, _httpClientService.Object);
@@ -74,10 +72,8 @@ namespace WeatherAPI.Tests.Services
         [Test]
         public async Task GetAllCity_With_No_City_Should_Return_Empty()
         {
-            // Use a clean instance of the context to run the test
             using (var context = new CityContext(options))
             {
-                // remove all cities in database
                 foreach (var city in context.Cities)
                     context.Cities.Remove(city);
 
@@ -96,7 +92,6 @@ namespace WeatherAPI.Tests.Services
         [Test]
         public async Task CityExists_With_Existing_City_Should_Return_True()
         {
-            // Use a clean instance of the context to run the test
             using (var context = new CityContext(options))
             {
                 var cityService = new CityService(context, _httpClientService.Object);
@@ -112,7 +107,6 @@ namespace WeatherAPI.Tests.Services
         [Test]
         public async Task CityExists_With_Non_Existing_City_Should_Return_False()
         {
-            // Use a clean instance of the context to run the test
             using (var context = new CityContext(options))
             {
                 var cityService = new CityService(context, _httpClientService.Object);
@@ -128,7 +122,6 @@ namespace WeatherAPI.Tests.Services
         [Test]
         public async Task CityExists_With_Existing_City_Wrong_Case_Should_Return_True()
         {
-            // Use a clean instance of the context to run the test
             using (var context = new CityContext(options))
             {
                 var cityService = new CityService(context, _httpClientService.Object);
@@ -144,7 +137,6 @@ namespace WeatherAPI.Tests.Services
         [Test]
         public async Task AddCityAsync_City_shouldnot_Exist()
         {
-            // Use a clean instance of the context to run the test
             using (var context = new CityContext(options))
             {
                 var cityService = new CityService(context, _httpClientService.Object);
@@ -174,7 +166,6 @@ namespace WeatherAPI.Tests.Services
         [Test]
         public async Task UpdateCityAsync_With_Existing_City_Should_Update()
         {
-            // Use a clean instance of the context to run the test
             using (var context = new CityContext(options))
             {
                 var cityService = new CityService(context, _httpClientService.Object);
@@ -201,12 +192,9 @@ namespace WeatherAPI.Tests.Services
         [Test]
         public async Task DeleteCityAsync_By_CityName_Should_Delete()
         {
-            // Use a clean instance of the context to run the test
             using (var context = new CityContext(options))
             {
                 var cityService = new CityService(context, _httpClientService.Object);
-
-                // Arrange
 
                 // Act
                 await cityService.DeleteCityAsync("Berlin");
