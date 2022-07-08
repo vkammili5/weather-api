@@ -20,7 +20,7 @@ public class CityController : ControllerBase
         return await _cityService.GetAllCity();
     }
 
-    [HttpGet("{cityName}", Name = "Get")]
+    [HttpGet("{cityName}")]
     public async Task<ActionResult<City>> GetCityByCityName(string cityName)
     {
         try
