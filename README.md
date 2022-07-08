@@ -86,7 +86,7 @@ Content type: `application/json`
 }
 ```
 
-If `{latitude}{longitude}` not in the ange known by the API, then the response status code would be `404 Not Found`, with response body:
+If `{latitude}/{longitude}` are not in the range known by the API, then the response status code would be `404 Not Found`, with response body:
 
 ```
 Latitude must be in range of -90 to 90°. Given: 99.0.
