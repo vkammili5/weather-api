@@ -18,7 +18,7 @@ public class WeatherController : ControllerBase
     }
 
     [HttpGet("{latitude}/{longitude}")]
-    public async Task<ActionResult<Weather>> GetWeatherByLatLonAsync(double latitude, double longitude)
+    public async Task<ActionResult<Weather>> GetWeatherByLatLon(double latitude, double longitude)
     {
         try
         {
@@ -32,7 +32,7 @@ public class WeatherController : ControllerBase
     }
 
     [HttpGet("{cityName}")]
-    public async Task<ActionResult<Weather>> GetWeatherByCityNameAsync(string cityName)
+    public async Task<ActionResult<Weather>> GetWeatherByCityName(string cityName)
     {
         try
         {
