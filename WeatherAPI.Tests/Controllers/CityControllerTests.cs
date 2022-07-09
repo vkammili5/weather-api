@@ -136,6 +136,27 @@ internal class CityControllerTests
     }
 
     [Test]
+    public async Task AddCityAsync_With_City_LatLon_OutofRange_Should_Conflict()
+    {
+        // Arrange
+        City newCity = new City()
+        {
+            Name = "NewCity",
+            Latitude = -180,
+            Longitude = 500
+        };
+
+        _cityService.Setup(c => c.CityExists(newCity.Name))
+            .ReturnsAsync(true);
+
+        // Act
+        var result = await _controller.AddCity(newCity);
+
+        // Assert
+        result.Result.Should().BeOfType(typeof(ConflictObjectResult));
+    }
+
+    [Test]
     public async Task UpdateCityAsync_Should_Update_City()
     {
         // Arrange
