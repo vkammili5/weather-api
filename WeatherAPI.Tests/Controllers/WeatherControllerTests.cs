@@ -102,6 +102,6 @@ internal class WeatherControllerTests
         var result = await _controller.GetWeatherByCityName("dfgsh");
 
         //Assert
-        result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
+        result.Result.Should().BeOfType(typeof(NotFoundObjectResult));
     }
 }
