@@ -28,7 +28,7 @@ public class WeatherController : ControllerBase
         }
         catch (HttpRequestException ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest(new { message = ex.Message });
         }
     }
 
@@ -43,7 +43,7 @@ public class WeatherController : ControllerBase
         }
         catch (HttpRequestException ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest(new { message = ex.Message });
         }
     }
 }
