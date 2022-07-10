@@ -40,7 +40,8 @@ public class CityController : ControllerBase
         if (await _cityService.CityExists(newCity.Name))
             return Conflict(new { message = $"City with city name {newCity.Name} already exists." });
 
-        if((!(newCity.Latitude > -90 && newCity.Latitude <90)) && (!(newCity.Longitude > -180 && newCity.Longitude < 180)))
+        bool isOutsideLatLonRange = !(Math.Abs(newCity.Latitude) <= 90 && Math.Abs(newCity.Longitude) <= 180);
+        if (isOutsideLatLonRange) 
             return BadRequest(new { message = $"CityName {newCity.Name} should be in range -90 and 90 for latitude & -180 and 180 for longitude " });
 
         await _cityService.AddCityAsync(newCity);
