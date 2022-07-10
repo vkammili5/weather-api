@@ -35,6 +35,8 @@ Here we have 3 folders:
 
 Clone the repository to your computer.
 
+Have MySQL running in the background, using Task Manager or otherwise.
+
 Setup local MySQL server to have user with appropriate privileges. For example, create a new MySQL user with the following commands in command line:
 
 ```
@@ -62,8 +64,6 @@ Then modify the content of `WeatherAPI/appsettings.Development.json` so that it 
   }
 }
 ```
-
-Then have MySQL running in the background, using Task Manager or otherwise.
 
 Then navigate to the `WeatherAPI` folder (with cd command or otherwise).
 
