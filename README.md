@@ -2,7 +2,7 @@
 
 This is a C# solution to the Weather API.
 
-The Base URL is `https://localhost:7230/`
+The Base URL is `https://localhost:7123/`
 
 The API has the following endpoints:
 
@@ -18,7 +18,7 @@ The API has the following endpoints:
 
 Here we have 3 folders:
 
-1. The `WeatherAPI` folder contains the C# solution to the challenge
+1. The `WeatherAPI` folder contains the C# solution to the API
 2. The `WeatherAPI.Tests` folder contains the unit tests for the solution
 3. The `diagrams` folder contains diagrams related to the solution
 
@@ -26,7 +26,53 @@ Here we have 3 folders:
 
 **Prerequisite**: The machine running the application should have [.NET 6.0](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) (or above), and [MySQL](https://www.mysql.com/) installed.
 
-...
+Clone the repository to your computer.
+
+Setup local MySQL server to have user with appropriate privileges. For example, create a new MySQL user with the following commands in command line:
+
+```
+mysql -u root
+
+CREATE USER 'cityweatherapi'@'localhost' IDENTIFIED BY 'apiuser123';
+
+GRANT ALL PRIVILEGES ON cityweather.* TO 'cityweatherapi'@'localhost';
+
+exit
+```
+
+Then modify the content of `WeatherAPI/appsettings.Development.json` so that it contains the appropriate `ConnectionStrings` with appropriate `user` and `password`.
+
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "ConnectionStrings": {
+    "cityweatherapi": "server=localhost; database=cityweather; user=cityweatherapi; password=apiuser123"
+  }
+}
+```
+
+Then have MySQL running in the background, using Task Manager or otherwise.
+
+Then navigate to the `WeatherAPI` folder (with cd command or otherwise).
+
+Then execute the **migration commands** to create a new database `cityweather` with a table `Cities` in your PostgreSQL server:
+
+```
+dotnet ef database update
+```
+
+Then run the application:
+
+```
+dotnet run
+```
+
+So now you can go to [https://localhost:7123/swagger/index.html](https://localhost:7123/swagger/index.html) to see the available endpoints.
 
 # UML Diagram
 
@@ -54,7 +100,7 @@ Content type: `application/json`
 {
   "latitude": 52.52,
   "longitude": 13.419998,
-  "weatherCode": 1,
+  "weatherCode": "ClearSky",
   "whatToPrepare": "bring coat"
 }
 ```
@@ -85,7 +131,7 @@ Content type: `application/json`
 {
   "latitude": 52.52,
   "longitude": 13.419998,
-  "weatherCode": 1,
+  "weatherCode": "ClearSky",
   "whatToPrepare": "bring coat"
 }
 ```
@@ -288,5 +334,69 @@ Content type: `application/json`
 ```json
 {
   "message": "CityName London not found in collection"
+}
+```
+
+# `/health` endpoint
+
+There's a special endpoint `/health` that shows the health of the application.
+
+You can access it by sending a **GET** request to `https://localhost:7123/health`.
+
+The typical response is:
+
+```json
+{
+  "status": "Healthy",
+  "totalDuration": "00:00:00.0620730",
+  "entries": {
+    "Open-meteo Forecast Public API": {
+      "data": {},
+      "duration": "00:00:00.0343575",
+      "status": "Healthy",
+      "tags": []
+    },
+    "Open-meteo Geocoding Public API": {
+      "data": {},
+      "duration": "00:00:00.0419530",
+      "status": "Healthy",
+      "tags": []
+    },
+    "City Database": {
+      "data": {},
+      "duration": "00:00:00.0620093",
+      "status": "Healthy",
+      "tags": []
+    }
+  }
+}
+```
+
+which indicates that:
+
+1. Open-meteo Forecast Public API is **healthy** (functional)
+2. Open-meteo Geocoding Public API is **healthy** (functional)
+3. City Database (MySQL local database) is **healthy** (successfully connected)
+
+If any of the above 3 dependencies isn't healthy, then the `"status"` property will reflect that.
+
+For example, if the MySQL server isn't running, then the response would look like this:
+
+```json
+{
+  "status": "Unhealthy",
+  "totalDuration": "00:00:04.0881357",
+  "entries": {
+    // ... ,
+
+    "City Database": {
+      "data": {},
+      "description": "Unable to connect to any of the specified MySQL hosts.",
+      "duration": "00:00:04.0828675",
+      "exception": "Unable to connect to any of the specified MySQL hosts.",
+      "status": "Unhealthy",
+      "tags": []
+    }
+  }
 }
 ```
