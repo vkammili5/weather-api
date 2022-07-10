@@ -260,6 +260,7 @@ Content type: `application/json`
 If the request body's city has a `latitude` or `longitude` outside of their valid ranges:
 
 $$-90 \degree \leq \textrm{latitude} \leq 90 \degree$$
+
 $$-180 \degree \leq \textrm{longitude} \leq 180 \degree$$
 
 then the web API cannot create city with invalid latitude longitude, so it'll respond with status code `400 Bad Request`.
