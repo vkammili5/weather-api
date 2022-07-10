@@ -2,7 +2,14 @@
 
 This is a C# solution to the Weather API.
 
-The Base URL is `https://localhost:7123/`
+This API allows users to:
+
+1. specify a **city name** and API will respond with the city's weather of the day and what clothing or accessories to prepare for the weather.
+2. specify a **coordinate (latitude, longitude)** and API will respond with the city's weather of the day and what clothing or accessories to prepare for the weather.
+3. create a new city (with city name, latitude, longitude) so that the API will know about the new city, which means the user can perform action `1.` with the new city name as the "specified city name".
+4. read, update, or delete the previously created cities in action `3.`
+
+The Base URL of the Weather API is `https://localhost:7123/`
 
 The API has the following endpoints:
 
