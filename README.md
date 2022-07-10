@@ -2,16 +2,14 @@
 
 This is a C# solution to the Weather API.
 
-This API consumes 2 public APIs:
+This API consumes 2 **public APIs**:
 
 1. [Weather data by Open-meteo.com](https://open-meteo.com/) for getting today's weather at a specified coordinate (latitude, longitude)
 2. [Geocoding data by Open-meteo.com](https://open-meteo.com/en/docs/geocoding-api) for getting the coordinate (latitude, longitude) at a specified city name.
 
-This API also allows users to specify their own "custom city" with city `name`, `latitude`, `longitude` so that the API can recognise new cities not found by the public API.
+This API also allows users to specify their own "custom city" (with city `name`, `latitude`, `longitude`) so that the API can recognise new cities not found by the Geocoding public API.
 
-The Base URL of the Weather API is `https://localhost:7123/`
-
-The API has the following endpoints:
+The Base URL of the Weather API is `https://localhost:7123/`, and has the following endpoints:
 
 | Action     | Endpoint                                | What it does                                                                                                    | API Documentation                                |
 | ---------- | --------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
@@ -147,7 +145,6 @@ If `{latitude}/{longitude}` are not in the range known by the API, then the resp
 
 ```
 Latitude must be in range of -90 to 90°. Given: 99.0.
-
 ```
 
 ## Get All Cities
@@ -265,7 +262,7 @@ $$-180 \degree \leq \textrm{longitude} \leq 180 \degree$$
 
 then the web API cannot create city with invalid latitude longitude, so it'll respond with status code `400 Bad Request`.
 
-Status Code: `409 Bad Request`
+Status Code: `400 Bad Request`
 
 Content type: `application/json`
 
