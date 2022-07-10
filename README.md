@@ -1,14 +1,13 @@
 # weather-api
 
-This is a C# solution to the Weather API. This API consumes the [Weather data by Open-meteo.com](https://open-meteo.com/) and
-[Geocoding data by Open-meteo.com](https://open-meteo.com/en/docs/geocoding-api) public APIs.
+This is a C# solution to the Weather API.
 
-This Weather API allows users to:
+This API consumes 2 public APIs:
 
-1. specify a **city name** and API will respond with the city's weather of the day and what clothing or accessories to prepare for the weather.
-2. specify a **coordinate (latitude, longitude)** and API will respond with the city's weather of the day and what clothing or accessories to prepare for the weather.
-3. create a new city (with city name, latitude, longitude) so that the API will know about the new city, which means the user can perform action `1.` with the new city name as the "specified city name".
-4. read, update, or delete the previously created cities in action `3.`
+1. [Weather data by Open-meteo.com](https://open-meteo.com/) for getting today's weather at a specified coordinate (latitude, longitude)
+2. [Geocoding data by Open-meteo.com](https://open-meteo.com/en/docs/geocoding-api) for getting the coordinate (latitude, longitude) at a specified city name.
+
+This API also allows users to specify their own "custom city" with city `name`, `latitude`, `longitude` so that the API can recognise new cities not found by the public API.
 
 The Base URL of the Weather API is `https://localhost:7123/`
 
