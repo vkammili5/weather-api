@@ -86,7 +86,7 @@ internal class CityControllerTests
         var result = await _controller.GetCityByCityName("asjdkflsdj");
 
         // Assert
-        result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
+        result.Result.Should().BeOfType(typeof(NotFoundObjectResult));
     }
 
     [Test]

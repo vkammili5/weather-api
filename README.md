@@ -65,7 +65,7 @@ Then modify the content of `WeatherAPI/appsettings.Development.json` so that it 
 
 Then navigate to the `WeatherAPI` folder (with cd command or otherwise).
 
-Then execute the **migration commands** to create a new database `cityweather` with a table `Cities` in your PostgreSQL server:
+Then execute the **migration commands** to create a new database `cityweather` with a table `Cities` in your MySQL server:
 
 ```
 dotnet ef database update
@@ -110,10 +110,12 @@ Content type: `application/json`
 }
 ```
 
-If `{cityName}` does not match any city name known by the API, then the response status code would be `400 Bad Request`, with response body:
+If `{cityName}` does not match any city name known by the API, then the response status code would be `404 Not Found`, with response body:
 
-```
-No geocoding found for BerlinCItys, please do POST request to /api/v1/city endpoint to add new city.
+```json
+{
+  "message": "No geocoding found for RandomCity, please do POST request to /api/v1/city endpoint to add new city."
+}
 ```
 
 ## Get Weather By Latitude Longitude
@@ -143,8 +145,10 @@ Content type: `application/json`
 
 If `{latitude}/{longitude}` are not in the range known by the API, then the response status code would be `400 Bad Request`, with response body:
 
-```
-Latitude must be in range of -90 to 90°. Given: 99.0.
+```json
+{
+  "message": "Latitude must be in range of -90 to 90°. Given: 199.0."
+}
 ```
 
 ## Get All Cities
@@ -205,8 +209,10 @@ Content type: `application/json`
 
 If `{cityName}` does not match any city name known by the API, then the response status code would be `404 Not Found`, with response body:
 
-```
-No geocoding found for Manchestersss, please do POST request to /api/v1/city endpoint to add new city.
+```json
+{
+  "message": "No geocoding found for RandomCity, please do POST request to /api/v1/city endpoint to add new city."
+}
 ```
 
 ## Add City

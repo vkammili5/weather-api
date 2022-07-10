@@ -30,7 +30,7 @@ public class CityController : ControllerBase
         }
         catch (HttpRequestException ex)
         {
-            return BadRequest(ex.Message);
+            return NotFound(new { message = ex.Message });
         }
     }
 
