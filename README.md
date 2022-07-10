@@ -110,7 +110,7 @@ Content type: `application/json`
 }
 ```
 
-If `{cityName}` does not match any city name known by the API, then the response status code would be `400 Bad Request`, with response body:
+If `{cityName}` does not match any city name known by the API, then the response status code would be `404 Not Found`, with response body:
 
 ```json
 {
