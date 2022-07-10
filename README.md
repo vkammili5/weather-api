@@ -37,9 +37,9 @@ Here we have 3 folders:
 
 ### Request
 
-**GET** api/v1/weather/{cityName}
+**GET** `api/v1/weather/{cityName}`
 
-For example api/v1/weather/Berlin
+For example `api/v1/weather/Berlin`
 
 ### Response samples
 
@@ -56,7 +56,7 @@ Content type: `application/json`
 }
 ```
 
-If `{cityName}` does not match any city name known by the API, then the response status code would be `404 Not Found`, with response body:
+If `{cityName}` does not match any city name known by the API, then the response status code would be `400 Bad Request`, with response body:
 
 ```
 No geocoding found for BerlinCItys, please do POST request to /api/v1/city endpoint to add new city.
@@ -67,9 +67,9 @@ No geocoding found for BerlinCItys, please do POST request to /api/v1/city endpo
 
 ### Request
 
-**GET** api/v1/weather/{latitude}/{longitude}
+**GET** `api/v1/weather/{latitude}/{longitude}`
 
-For example api/v1/weather/52.52/13.41
+For example `api/v1/weather/52.52/13.41`
 
 ### Response samples
 
@@ -86,7 +86,7 @@ Content type: `application/json`
 }
 ```
 
-If `{latitude}/{longitude}` are not in the range known by the API, then the response status code would be `404 Not Found`, with response body:
+If `{latitude}/{longitude}` are not in the range known by the API, then the response status code would be `400 Bad Request`, with response body:
 
 ```
 Latitude must be in range of -90 to 90°. Given: 99.0.
