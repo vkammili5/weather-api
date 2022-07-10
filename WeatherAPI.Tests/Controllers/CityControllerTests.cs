@@ -136,6 +136,89 @@ internal class CityControllerTests
     }
 
     [Test]
+    public async Task AddCityAsync_With_City_LatLon_OutofRange_Should_Conflict()
+    {
+        // Arrange
+        City newCity = new City()
+        {
+            Name = "NewCity",
+            Latitude = -180,
+            Longitude = 500
+        };
+
+        _cityService.Setup(c => c.CityExists(newCity.Name))
+            .ReturnsAsync(false);
+
+        // Act
+        var result = await _controller.AddCity(newCity);
+
+        // Assert
+        result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
+    }
+
+    [Test]
+    public async Task AddCityAsync_With_City_Lon_OutofRange_Should_Conflict()
+    {
+        // Arrange
+        City newCity = new City()
+        {
+            Name = "NewCity",
+            Latitude = 0,
+            Longitude = 1000
+        };
+
+        _cityService.Setup(c => c.CityExists(newCity.Name))
+            .ReturnsAsync(false);
+
+        // Act
+        var result = await _controller.AddCity(newCity);
+
+        // Assert
+        result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
+    }
+
+    [Test]
+    public async Task AddCityAsync_With_City_Lat_OutofRange_Should_Conflict()
+    {
+        // Arrange
+        City newCity = new City()
+        {
+            Name = "NewCity",
+            Latitude = -1800,
+            Longitude = 50
+        };
+
+        _cityService.Setup(c => c.CityExists(newCity.Name))
+            .ReturnsAsync(false);
+
+        // Act
+        var result = await _controller.AddCity(newCity);
+
+        // Assert
+        result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
+    }
+
+    [Test]
+    public async Task AddCityAsync_With_City_LatLon_NegOutofRange_Should_Conflict()
+    {
+        // Arrange
+        City newCity = new City()
+        {
+            Name = "NewCity",
+            Latitude = -1800,
+            Longitude = -500
+        };
+
+        _cityService.Setup(c => c.CityExists(newCity.Name))
+            .ReturnsAsync(false);
+
+        // Act
+        var result = await _controller.AddCity(newCity);
+
+        // Assert
+        result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
+    }
+    [Test]
     public async Task UpdateCityAsync_Should_Update_City()
     {
         // Arrange
