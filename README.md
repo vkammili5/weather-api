@@ -257,6 +257,23 @@ Content type: `application/json`
 }
 ```
 
+If the request body's city has a `latitude` or `longitude` outside of their valid ranges:
+
+$$-90 \degree \leq \textrm{latitude} \leq 90 \degree$$
+$$-180 \degree \leq \textrm{longitude} \leq 180 \degree$$
+
+then the web API cannot create city with invalid latitude longitude, so it'll respond with status code `400 Bad Request`.
+
+Status Code: `409 Bad Request`
+
+Content type: `application/json`
+
+```json
+{
+  "message": "City New City should be in range -90 and 90 for latitude & -180 and 180 for longitude "
+}
+```
+
 ## Update City
 
 [[Back To Top]](#weather-api)
