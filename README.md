@@ -1,8 +1,9 @@
 # weather-api
 
-This is a C# solution to the Weather API.
+This is a C# solution to the Weather API. This API consumes the [Weather data by Open-meteo.com](https://open-meteo.com/) and
+[Geocoding data by Open-meteo.com](https://open-meteo.com/en/docs/geocoding-api) public APIs.
 
-This API allows users to:
+This Weather API allows users to:
 
 1. specify a **city name** and API will respond with the city's weather of the day and what clothing or accessories to prepare for the weather.
 2. specify a **coordinate (latitude, longitude)** and API will respond with the city's weather of the day and what clothing or accessories to prepare for the weather.
@@ -49,7 +50,7 @@ GRANT ALL PRIVILEGES ON cityweather.* TO 'cityweatherapi'@'localhost';
 exit
 ```
 
-Then modify the content of `WeatherAPI/appsettings.Development.json` so that it contains the appropriate `ConnectionStrings` with appropriate `user` and `password`.
+Then modify the content of `WeatherAPI/appsettings.Development.json` so that it contains the appropriate `ConnectionStrings` to the MySql server with appropriate `user` and `password`.
 
 ```json
 {
@@ -381,8 +382,8 @@ The typical response is:
 
 which indicates that:
 
-1. Open-meteo Forecast Public API is **healthy** (functional)
-2. Open-meteo Geocoding Public API is **healthy** (functional)
+1. [Open-meteo Forecast Public API](https://open-meteo.com/en) is **healthy** (functional)
+2. [Open-meteo Geocoding Public API](https://open-meteo.com/en/docs/geocoding-api) is **healthy** (functional)
 3. City Database (MySQL local database) is **healthy** (successfully connected)
 
 If any of the above 3 dependencies isn't healthy, then the `"status"` property will reflect that.
@@ -394,7 +395,7 @@ For example, if the MySQL server isn't running, then the response would look lik
   "status": "Unhealthy",
   "totalDuration": "00:00:04.0881357",
   "entries": {
-    // ... ,
+    ...
 
     "City Database": {
       "data": {},
