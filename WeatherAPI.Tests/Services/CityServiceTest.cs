@@ -148,6 +148,8 @@ namespace WeatherAPI.Tests.Services
                     Latitude = 52.52,
                     Longitude = 13.419998
                 };
+                var doesCityExistsInDatabase = await cityService.CityExists(newCity.Name);
+                doesCityExistsInDatabase.Should().BeFalse();
 
                 // Act
                 var result = await cityService.AddCityAsync(newCity);
