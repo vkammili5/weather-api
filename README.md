@@ -6,10 +6,15 @@ The Base URL is `https://localhost:7230/`
 
 The API has the following endpoints:
 
-| Action  | Endpoint                                | What it does                                                                    | API Documentation |
-| ------- | --------------------------------------- | ------------------------------------------------------------------------------- | ----------------- |
-| **GET** | `api/v1/weather/{cityName}`             | **Get** today's weather for city: `{cityName}`                                  | [Click Here](#)   |
-| **GET** | `api/v1/weather/{latitude}/{longitude}` | **Get** today's weather for geo coordinates near `{latitude}` and `{longitude}` | [Click Here](#)   |
+| Action     | Endpoint                                | What it does                                                                                                    | API Documentation                                |
+| ---------- | --------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| **GET**    | `api/v1/weather/{cityName}`             | **Get** today's weather for city: `{cityName}`                                                                  | [Click Here](#get-weather-by-city-name)          |
+| **GET**    | `api/v1/weather/{latitude}/{longitude}` | **Get** today's weather for geo coordinates near `{latitude}` and `{longitude}`                                 | [Click Here](#get-weather-by-latitude-longitude) |
+| **GET**    | `api/v1/city`                           | **Get** all cities (`name`, `latitude`, `longitude`) in local MySql database                                    | [Click Here](#get-all-cities)                    |
+| **GET**    | `api/v1/city/{cityName}`                | **Get** city (`name`, `latitude`, `longitude`) with `name` matching `{cityName}`                                | [Click Here](#get-city-by-city-name)             |
+| **POST**   | `api/v1/city`                           | **Create** a new city (`name`, `latitude`, `longitude`) into local MySql database                               | [Click Here](#add-city)                          |
+| **PUT**    | `api/v1/city/{cityName}`                | **Update** an existing city (`name`, `latitude`, `longitude`) in local MySql database, matching by `{cityName}` | [Click Here](#update-city)                       |
+| **DELETE** | `api/v1/city/{cityName}`                | **Delete** an existing city (`name`, `latitude`, `longitude`) in local MySql database, matching by `{cityName}` | [Click Here](#delete-city)                       |
 
 Here we have 3 folders:
 
@@ -29,9 +34,7 @@ Here we have 3 folders:
 
 # API Documentation
 
-## `Weather` endpoints
-
-### Get Weather By City Name
+## Get Weather By City Name
 
 [[Back To Top]](#weather-api)
 
@@ -61,7 +64,8 @@ If `{cityName}` does not match any city name known by the API, then the response
 ```
 No geocoding found for BerlinCItys, please do POST request to /api/v1/city endpoint to add new city.
 ```
-### Get Weather By Latitude Longitude
+
+## Get Weather By Latitude Longitude
 
 [[Back To Top]](#weather-api)
 
@@ -93,17 +97,15 @@ Latitude must be in range of -90 to 90°. Given: 99.0.
 
 ```
 
-## `City` endpoints
-
-### Get All Cities
+## Get All Cities
 
 [[Back To Top]](#weather-api)
 
-#### Request
+### Request
 
 **GET** `api/v1/city`
 
-#### Request samples
+### Request samples
 
 Status Code: `200 OK`
 
@@ -126,17 +128,17 @@ Content type: `application/json`
 ]
 ```
 
-### Get City By City Name
+## Get City By City Name
 
 [[Back To Top]](#weather-api)
 
-#### Request
+### Request
 
 **GET** `api/v1/city/{cityName}`
 
 For example `api/v1/city/Manchester`
 
-#### Response samples
+### Response samples
 
 Status Code: `200 OK`
 
@@ -157,11 +159,11 @@ If `{cityName}` does not match any city name known by the API, then the response
 No geocoding found for Manchestersss, please do POST request to /api/v1/city endpoint to add new city.
 ```
 
-### Add City
+## Add City
 
 [[Back To Top]](#weather-api)
 
-#### Request
+### Request
 
 **POST** `api/v1/city`
 
@@ -175,7 +177,7 @@ with request body
 }
 ```
 
-#### Request samples
+### Request samples
 
 Status Code: `201 Created`
 
@@ -202,11 +204,11 @@ Content type: `application/json`
 }
 ```
 
-### Update City
+## Update City
 
 [[Back To Top]](#weather-api)
 
-#### Request
+### Request
 
 **PUT** `api/v1/city/{cityName}`
 
@@ -222,7 +224,7 @@ with request body
 }
 ```
 
-#### Request samples
+### Request samples
 
 Status Code: `200 OK`
 
@@ -261,17 +263,17 @@ Content type: `application/json`
 }
 ```
 
-### Delete City
+## Delete City
 
 [[Back To Top]](#weather-api)
 
-#### Request
+### Request
 
 **DELETE** `api/v1/city/{cityName}`
 
 For example, `api/v1/city/London`
 
-#### Request samples
+### Request samples
 
 Status Code: `204 No Content`
 
